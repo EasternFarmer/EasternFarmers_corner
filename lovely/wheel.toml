@@ -1,0 +1,17 @@
+[manifest]
+name = "EF_wheel"
+version = "1.0.0"
+dump_lua = true
+priority = 5
+
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''                end
+                used_tarot:juice_up(0.3, 0.5)
+            return true end }))
+        else'''
+position = "after"
+payload = '''G.GAME.EF_wheel_failed = 1'''
+match_indent = true

@@ -1,0 +1,6 @@
+-- assert(SMODS.load_file("src/mod_config.lua"))()
+assert(SMODS.load_file("src/atlas.lua"))()
+assert(SMODS.load_file("src/rarities.lua"))()
+assert(SMODS.load_file("src/jokers.lua"))()
+assert(SMODS.load_file("src/boosters.lua"))()
+assert(SMODS.load_file("src/tags.lua"))()
