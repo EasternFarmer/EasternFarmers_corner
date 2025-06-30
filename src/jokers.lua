@@ -211,7 +211,7 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.extra.current_chips}}
     end,
-    config = { extra = { current_chips = 2 } },
+    config = { extra = { current_chips = 0 } },
     atlas = "Jokers",
     pos = { x = 3, y = 0 },
     unlocked = true,
@@ -336,6 +336,8 @@ SMODS.Joker{
         info_queue[#info_queue + 1] = { key = 'tag_EF_small_plant_pack_tag', set = 'Tag' }
     end,
     config = { extra = {odds = 6} },
+    atlas = "Jokers",
+    pos = {x=5,y=0},
     unlocked = true,
     discovered = true,
     blueprint_compat = false,
@@ -419,6 +421,8 @@ SMODS.Joker{
                     joker.ability.extra.chip_mod = joker.ability.extra.chip_mod / card.ability.extra.Xvar
                 elseif joker.ability.name == 'Gros Michel' then
                     joker.ability.extra.odds = joker.ability.extra.odds * card.ability.extra.Xvar
+                elseif joker.ability.name == 'Ghost pepper' then
+                    joker.ability.extra.lose_rate = joker.ability.extra.lose_rate / 2
                 end
             end
         end
@@ -592,28 +596,30 @@ SMODS.Joker{
         name = 'Wheel of Space',
         text = {
             'Everytime {C:tarot}Wheel of Fortune{}',
-            'misses, it randomly upgrades',
-            'one of the {C:gold}Poker Hands{}',
+            'misses, it upgrades the most',
+            'played  {C:gold}Poker Hands{}',
             "{C:inactive, s:0.7}(More than one Wheel of Space doesn't work!{})",
 
         }
     },
     loc_vars = function(self, info_queue, card)
-        info_queue[#info_queue+1] = G.P_CENTERS.wheel_of_fortune
+        info_queue[#info_queue+1] = {key = "c_wheel_of_fortune", set="Tarot"}
         return {}
     end,
     config = { extra = {} },
+    atlas = "Jokers",
+    pos = {x = 4, y = 0},
     unlocked = true,
     discovered = true,
     blueprint_compat = false,
     eternal_compat = true,
-    rarity = 2,
+    rarity = 3,
 
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: alperen_pro', G.C.RARITY.Common, G.C.BLACK, 0.8 )
  	end,
     add_to_deck = function(self, card, from_debuff)
-        G.GAME.EF_wheel_failed = 0
+        G.GAME.EF_wheel_failed = 0 -- this varible is set to 1 according to lovely/wheel.toml
     end,
     calculate = function(self, card, context)
         if context.using_consumeable then
@@ -623,7 +629,14 @@ SMODS.Joker{
                     "Straight", "High Card", "Three of a Kind", "Two Pair",
                     "Flush Five", "Five of a Kind", "Four of a Kind", "Straight Flush"
                 }
-                local hand_chosen = pseudorandom_element(hand_types, pseudoseed('Space'))
+                -- local hand_chosen = pseudorandom_element(hand_types, pseudoseed('Space'))
+                local max_played = -1
+                for k,v in ipairs(hand_types) do
+                    if G.GAME.hands[v].played > max_played then
+                        max_played = G.GAME.hands[v].played
+                        hand_chosen = v
+                    end
+                end
                 SMODS.smart_level_up_hand(nil, hand_chosen)
                 G.GAME.EF_wheel_failed = 0
                 return {
@@ -669,3 +682,8 @@ SMODS.Joker{
         end
     end
 }
+
+--[[
+oh i got an idea if ur interested, joker that re-triggers plant jokers x times, 
+increased by 1 everytime u beat the plant or water boss blind and uh called good harvest?
+]]
