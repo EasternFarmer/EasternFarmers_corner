@@ -13,3 +13,11 @@ SMODS.Atlas({
     py = 95, 
     atlas_table = "ASSET_ATLAS"
 }):register()
+
+SMODS.Atlas({
+    key = "Spectrals", 
+    path = "Spectrals.png", 
+    px = 71,
+    py = 95, 
+    atlas_table = "ASSET_ATLAS"
+}):register()

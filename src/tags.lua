@@ -10,7 +10,7 @@ SMODS.Tag{
     discovered = true,
     apply = function(self, tag, context)
         -- print(context.type)
-        if context.type == 'immediate' then
+        if context.type == 'new_blind_choice' then
             local lock = tag.ID
             G.CONTROLLER.locks[lock] = true
             tag:yep('+', G.C.PURPLE, function()

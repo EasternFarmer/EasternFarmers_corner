@@ -646,44 +646,9 @@ SMODS.Joker{
         end
     end
 }
-SMODS.Joker{
-    --[[
-    Jalapeno
-    Sell this joker to destroy your hand and draw a card
-    ]]
-    name = "Jalapeno", -- Idea Credit: thenumberpie @ discord
-    key = "jalapeno",
-    loc_txt = {
-        name = 'Jalapeno',
-        text = {
-            '{C:gold}Sell{} this joker to {C:gold}destroy{}',
-            '{C:gold}your current{} hand'
-        }
-    },
-    loc_vars = function(self, info_queue, card)
-        return {}
-    end,
-    config = { extra = {} },
-    unlocked = true,
-    discovered = true,
-    blueprint_compat = false,
-    eternal_compat = false,
-    rarity = "EF_plant",
-
-    set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea Credit: thenumberpie', G.C.RARITY.Common, G.C.BLACK, 0.8 )
- 	end,
-
-    calculate = function(self, card, context)
-        if context.selling_self then
-            for i, v in pairs(G.hand.cards) do
-				v:start_dissolve()
-			end
-        end
-    end
-}
 
 --[[
 oh i got an idea if ur interested, joker that re-triggers plant jokers x times, 
-increased by 1 everytime u beat the plant or water boss blind and uh called good harvest?
+increased by 1 everytime u beat the plant or water boss blind and uh called good harvest? --._.fr
+
 ]]
