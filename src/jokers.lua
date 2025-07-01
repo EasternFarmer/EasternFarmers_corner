@@ -221,7 +221,7 @@ SMODS.Joker{
     rarity = "EF_plant",
 
     set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 		badges[#badges+1] = create_badge('Idea & Art Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
  	end,
 
     calculate = function(self, card, context)
@@ -299,6 +299,8 @@ SMODS.Joker{
     },
     unlocked = true,
     discovered = true,
+    atlas = "Jokers",
+    pos = {x = 6, y = 0},
     blueprint_compat = true,
     eternal_compat = true,
     rarity = "EF_plant",
@@ -560,7 +562,7 @@ SMODS.Joker{
                 }
             elseif random_num == 50 then
                 return {
-                    xmult = Xmult_for_hit_50
+                    xmult = card.ability.extra.Xmult_for_hit_50
                 }
             elseif 50 < random_num and random_num <= 100 then
                 return {
@@ -662,7 +664,7 @@ SMODS.Joker{
                         hand_chosen = v
                     end
                 end
-                SMODS.smart_level_up_hand(nil, hand_chosen)
+                SMODS.smart_level_up_hand(nil, hand_chosen, false)
                 G.GAME.EF_wheel_failed = 0
                 return {
                     message = "Level up!"

@@ -1,4 +1,6 @@
-destroy_random_joker = function(seed)
+EF = {}
+
+EF.destroy_random_joker = function(seed)
     if not seed then
         seed = 'Destroy_joker'
     end

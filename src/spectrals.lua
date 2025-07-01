@@ -58,6 +58,8 @@ SMODS.Consumable {
             '{C:enhanced}steel{} red seal jacks'
         }
     },
+    atlas = "Spectrals",
+    pos = {x = 1, y = 0},
     discovered = true,
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue+1] = G.P_CENTERS.e_polychrome
@@ -113,8 +115,8 @@ SMODS.Consumable {
     end,
     use = function(self, card, area, copier)
 
-        destroy_random_joker() -- src/helper_functions.lua
-        destroy_random_joker()
+        EF.destroy_random_joker() -- src/helper_functions.lua
+        EF.destroy_random_joker()
         --create blueprint
         local card_ = SMODS.create_card{ set = "Joker", area = G.jokers, key = "j_blueprint"}
         card_:add_to_deck()
@@ -141,6 +143,8 @@ SMODS.Consumable {
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
  	end,
+    atlas = "Spectrals",
+    pos = {x = 2, y = 0},
     discovered = true,
     loc_vars = function(self, info_queue, card)
         return { vars = {card.ability.extra.editions_added, } }

@@ -1,7 +1,6 @@
 
 SMODS.Challenge {
     key = "doom",
-    unlocked = true,
     loc_txt = {
         name = "Wheel of Doom",
         text = {
