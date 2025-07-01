@@ -514,12 +514,24 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         return { vars = {card.ability.extra.Xmult_for_hit_50} }
     end,
-    config = { extra = {Xmult_for_hit_50 = 50} },
+    config = { extra = {Xmult_for_hit_50 = 50, FPS = 6} },
+    atlas = "LetsGoGambling",
+    pos = {x=0, y=0},
     unlocked = true,
     discovered = true,
     blueprint_compat = true,
     eternal_compat = true,
     rarity = 2,
+    update = function(self, card, dt)
+        G.GAME.EF_LetsGoGambling_delay = G.GAME.EF_LetsGoGambling_delay or 0
+        
+        if G.GAME.EF_LetsGoGambling_delay == 60 / card.ability.extra.FPS then 
+            card.config.center.pos.x = (card.config.center.pos.x + 1) % 40
+            G.GAME.EF_LetsGoGambling_delay = 0
+        else
+            G.GAME.EF_LetsGoGambling_delay = G.GAME.EF_LetsGoGambling_delay + 1
+        end
+    end,
 
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: wimpyzombie22', G.C.RARITY.Common, G.C.BLACK, 0.8 )
@@ -651,4 +663,8 @@ SMODS.Joker{
 oh i got an idea if ur interested, joker that re-triggers plant jokers x times, 
 increased by 1 everytime u beat the plant or water boss blind and uh called good harvest? --._.fr
 
+
+I would be called fertilizer 
+(I'm using x and y right now I don't know how much mult and chips yet)
+Gives x amount of chips and y amount of mult for each plant joker you have -- wizard
 ]]
