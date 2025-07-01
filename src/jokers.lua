@@ -441,21 +441,22 @@ SMODS.Joker{
         name = 'Grapevine',
         text = {
             '{C:mult}+#1#{} Mult',
-            '{C:red}#2#{} hand size',
+            'Gains {C:mult}+#2#{} Mult at the end of the round',
+            '{C:red}#3#{} hand size',
             'Create one negative copy of this',
             'joker per round at the end of the round',
         }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = {card.ability.extra.mult, card.ability.extra.hand_size} }
+        return { vars = {card.ability.extra.mult, card.ability.extra.plus_mult, card.ability.extra.hand_size} }
     end,
-    config = { extra = {mult = 40, hand_size = -1} },
+    config = { extra = {mult = 4, plus_mult = 2, hand_size = -1} },
     unlocked = true,
     discovered = true,
     blueprint_compat = false,
     eternal_compat = false,
     rarity = "EF_plant",
-    cost = 1,
+    cost = 0,
     set_badges = function(self, card, badges)
          badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
      end,
@@ -473,17 +474,29 @@ SMODS.Joker{
                 mult = card.ability.extra.mult
             }
         end
-        if context.end_of_round and not context.blueprint then
+        if context.end_of_round and context.main_eval and context.game_over == false and not context.blueprint then
+            card.ability.extra.mult = card.ability.extra.mult + card.ability.extra.plus_mult
+            SMODS.calculate_effect({message = '+2 Mult', color = G.C.MULT}, card)
+        end
+        if context.end_of_round and context.game_over == false and not context.blueprint then
             G.GAME.EF_grapevine_curr_copy = G.GAME.EF_grapevine_curr_copy or 0
 
             if G.GAME.EF_grapevine_curr_copy < G.GAME.EF_grapevine_max_copy then
 
                 G.GAME.EF_grapevine_curr_copy = G.GAME.EF_grapevine_curr_copy + 1
                 if #G.jokers.cards <= G.jokers.config.card_limit then
-                    local card_ = SMODS.create_card{ set = "Joker", area = G.jokers, key = "j_EF_grapevine"}
-                    card_:set_edition('e_negative', true)
-                    card_:add_to_deck()
-                    G.jokers:emplace(card_)
+                    G.E_MANAGER:add_event(Event({
+                        trigger = "after", 
+                        delay = 0.2, 
+                        func = (function()
+                            local card_ = SMODS.create_card{ set = "Joker", area = G.jokers, key = "j_EF_grapevine"}
+                            card_:set_edition('e_negative', true)
+                            card_:add_to_deck()
+                            G.jokers:emplace(card_)
+                            return true
+                        end)
+                    }))
+                    
                     return { message = "growth"}
                 else
                     return { message = "no room"}
@@ -524,7 +537,7 @@ SMODS.Joker{
     rarity = 2,
     update = function(self, card, dt)
         G.GAME.EF_LetsGoGambling_delay = G.GAME.EF_LetsGoGambling_delay or 0
-        
+
         if G.GAME.EF_LetsGoGambling_delay == 60 / card.ability.extra.FPS then 
             card.config.center.pos.x = (card.config.center.pos.x + 1) % 40
             G.GAME.EF_LetsGoGambling_delay = 0
