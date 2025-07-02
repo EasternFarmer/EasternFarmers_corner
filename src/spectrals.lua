@@ -105,6 +105,8 @@ SMODS.Consumable {
             'and create a blueprint'
         }
     },
+    atlas = "Spectrals",
+    pos = {x=3, y=0},
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
  	end,

@@ -4,6 +4,8 @@ SMODS.Tag{
         name = 'Garden tag',
         text = {'Gives a free {C:spectral}Garden Pack{}'},
     },
+    atlas = "Tags",
+    pos = {x = 0, y = 0},
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = G.P_CENTERS.p_EF_small_plant_booster
     end,
