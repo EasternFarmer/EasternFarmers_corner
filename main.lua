@@ -8,3 +8,4 @@ assert(SMODS.load_file("src/boosters.lua"))()
 assert(SMODS.load_file("src/tags.lua"))()
 assert(SMODS.load_file("src/spectrals.lua"))()
 assert(SMODS.load_file("src/challenges.lua"))()
+assert(SMODS.load_file("src/mod_compat/load.lua"))() -- more loading there

@@ -179,6 +179,11 @@ SMODS.Joker{
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
  	end,
+
+    add_to_deck = function (self, card, from_debuff)
+        G.GAME.EF_dandelion_xmult = G.GAME.EF_dandelion_xmult or 1.0
+    end,
+
     calculate = function(self, card, context)
         if context.selling_self and not context.blueprint then
             G.GAME.EF_dandelion_xmult = G.GAME.EF_dandelion_xmult or 1.0
@@ -211,7 +216,7 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.extra.current_chips}}
     end,
-    config = { extra = { current_chips = 0 } },
+    config = { extra = { current_chips = 2 } },
     atlas = "Jokers",
     pos = { x = 3, y = 0 },
     unlocked = true,
@@ -226,8 +231,15 @@ SMODS.Joker{
 
     calculate = function(self, card, context)
         if context.joker_main and not context.blueprint then
-            card.ability.extra.current_chips = card.ability.extra.current_chips + 2
-            SMODS.calculate_effect({ message = "+2 Chips", color = G.C.CHIPS}, card)
+            G.E_MANAGER:add_event(Event({
+                trigger = "after", 
+                delay = 0.1, 
+                func = function()
+                    card.ability.extra.current_chips = card.ability.extra.current_chips + 2
+                    SMODS.calculate_effect({ message = "+2 Chips", color = G.C.CHIPS}, card)
+                    return true
+                end
+            }))
         end
 
         if context.joker_main then
@@ -254,7 +266,7 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.extra.dollars}}
     end,
-    config = { extra = { dollars = 1 } },
+    config = { extra = { dollars = 2 } },
     atlas = "Jokers",
     pos = { x = 1, y = 0},
     unlocked = true,
@@ -285,39 +297,42 @@ SMODS.Joker{
 
     end
 }
-SMODS.Joker{
-    name = "Rootabaga", -- Idea Credit: wimpyzombie22 @ discord
-    key = "rootabaga",
-    loc_txt = {
-        name = 'Rootabaga',
-        text = {
-            'Takes the square root of',
-            'your total {C:chips}Chip{} count,',
-            'and adds that number',
-            'to your {C:mult}Mult{}'
-        }
-    },
-    unlocked = true,
-    discovered = true,
-    atlas = "Jokers",
-    pos = {x = 6, y = 0},
-    blueprint_compat = true,
-    eternal_compat = true,
-    rarity = "EF_plant",
-
-    set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea Credit: wimpyzombie22', G.C.RARITY.Common, G.C.BLACK, 0.8 )
- 	end,
-    calculate = function(self, card, context)
-        if context.joker_main then
-            local chips = hand_chips or 0
-            return {
-                mult = math.sqrt(chips)
+---@diagnostic disable-next-line: undefined-global 
+if not Talisman then -- creates a error (probably talisman changes hand_chips to a table)
+    SMODS.Joker{
+        name = "Rootabaga", -- Idea Credit: wimpyzombie22 @ discord
+        key = "rootabaga",
+        loc_txt = {
+            name = 'Rootabaga',
+            text = {
+                'Takes the square root of',
+                'your hands {C:chips}Chips{},',
+                'and adds that number',
+                'to your {C:mult}Mult{}'
             }
-        end
+        },
+        unlocked = true,
+        discovered = true,
+        atlas = "Jokers",
+        pos = {x = 6, y = 0},
+        blueprint_compat = true,
+        eternal_compat = true,
+        rarity = "EF_plant",
 
-    end
-}
+        set_badges = function(self, card, badges)
+            badges[#badges+1] = create_badge('Idea Credit: wimpyzombie22', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+        end,
+        calculate = function(self, card, context)
+            if context.joker_main then
+                local chips = hand_chips or 0
+                return {
+                    mult = math.sqrt(chips)
+                }
+            end
+
+        end
+    }
+end
 SMODS.Joker{
     --[[
     seed
@@ -329,13 +344,14 @@ SMODS.Joker{
     loc_txt = {
         name = 'Seed',
         text = {
-            '{C:green}1 in 6{} chance of getting',
+            '{C:green}#1# in #2#{} chance of getting',
             'destroyed at the end of the round',
             'when destroyed, creates a {C:spectral,T:t_EF_small_plant_pack_tag}Garden tag{}'
         }
     },
     loc_vars = function(self, info_queue, card)
         info_queue[#info_queue + 1] = { key = 'tag_EF_small_plant_pack_tag', set = 'Tag' }
+        return {vars = {G.GAME.probabilities.normal, card.ability.extra.odds}}
     end,
     config = { extra = {odds = 6} },
     atlas = "Jokers",
