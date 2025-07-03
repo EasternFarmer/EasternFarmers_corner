@@ -352,7 +352,7 @@ SMODS.Joker{
 
     calculate = function(self, card, context)
         if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
-            if pseudorandom('vremade_gros_michel') < G.GAME.probabilities.normal / card.ability.extra.odds then
+            if pseudorandom('EF_Seed') < G.GAME.probabilities.normal / card.ability.extra.odds then
                 card:start_dissolve()
                 G.E_MANAGER:add_event(Event({
                     func = (function()
@@ -529,7 +529,7 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         return { vars = {card.ability.extra.Xmult_for_hit_50} }
     end,
-    config = { extra = {Xmult_for_hit_50 = 50, FPS = 6} },
+    config = { extra = {Xmult_for_hit_50 = 50, FPS = 6, delay = 0, x_pos = 0} },
     atlas = "LetsGoGambling",
     pos = {x=0, y=0},
     unlocked = true,
@@ -538,13 +538,12 @@ SMODS.Joker{
     eternal_compat = true,
     rarity = 2,
     update = function(self, card, dt)
-        G.GAME.EF_LetsGoGambling_delay = G.GAME.EF_LetsGoGambling_delay or 0
-
-        if G.GAME.EF_LetsGoGambling_delay == 60 / card.ability.extra.FPS then 
-            card.config.center.pos.x = (card.config.center.pos.x + 1) % 40
-            G.GAME.EF_LetsGoGambling_delay = 0
+        if card.ability.extra.delay == 60 / card.ability.extra.FPS then
+            card.ability.extra.x_pos = (card.ability.extra.x_pos + 1) % 40
+            card.children.center:set_sprite_pos({x=card.ability.extra.x_pos,y=0})
+            card.ability.extra.delay = 0
         else
-            G.GAME.EF_LetsGoGambling_delay = G.GAME.EF_LetsGoGambling_delay + 1
+            card.ability.extra.delay = card.ability.extra.delay + 1
         end
     end,
 
@@ -554,7 +553,7 @@ SMODS.Joker{
 
     calculate = function(self, card, context)
         if context.joker_main then
-            local random_num = pseudorandom('vremade_misprint', 1, 100)
+            local random_num = pseudorandom('GamblersDream', 1, 100)
             print(random_num)
             if 1 <= random_num and random_num < 50 then
                 return {
@@ -625,8 +624,6 @@ SMODS.Joker{
             'Everytime {C:tarot}Wheel of Fortune{}',
             'misses, it upgrades the most',
             'played  {C:gold}Poker Hands{}',
-            "{C:inactive, s:0.7}(More than one Wheel of Space doesn't work!{})",
-
         }
     },
     loc_vars = function(self, info_queue, card)
@@ -645,35 +642,14 @@ SMODS.Joker{
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: alperen_pro', G.C.RARITY.Common, G.C.BLACK, 0.8 )
  	end,
-    add_to_deck = function(self, card, from_debuff)
-        G.GAME.EF_wheel_failed = 0 -- this varible is set to 1 according to lovely/wheel.toml
-    end,
     calculate = function(self, card, context)
-        if context.using_consumeable then
-            if G.GAME.EF_wheel_failed == 1 and not context.blueprint then
-                local hand_types = {
-                    "Flush House", 'Full House', 'Flush', 'Pair',
-                    "Straight", "High Card", "Three of a Kind", "Two Pair",
-                    "Flush Five", "Five of a Kind", "Four of a Kind", "Straight Flush"
-                }
-                -- local hand_chosen = pseudorandom_element(hand_types, pseudoseed('Space'))
-                local max_played = -1
-                for k,v in ipairs(hand_types) do
-                    if G.GAME.hands[v].played > max_played then
-                        max_played = G.GAME.hands[v].played
-                        hand_chosen = v
-                    end
-                end
+        if context.wheel_of_fortune_fail and not context.blueprint then -- wheel.toml
+                local hand_chosen = EF.get_most_played_hands()[1].key
+                SMODS.calculate_effect({message = "Level up!"}, card)
                 SMODS.smart_level_up_hand(nil, hand_chosen, false)
-                G.GAME.EF_wheel_failed = 0
-                return {
-                    message = "Level up!"
-                }
             end
         end
-    end
 }
-
 --[[
 oh i got an idea if ur interested, joker that re-triggers plant jokers x times, 
 increased by 1 everytime u beat the plant or water boss blind and uh called good harvest? --._.fr
