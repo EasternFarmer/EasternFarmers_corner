@@ -345,6 +345,7 @@ SMODS.Joker{
     blueprint_compat = false,
     eternal_compat = false,
     rarity = 1,
+    cost = 4,
 
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
@@ -537,6 +538,7 @@ SMODS.Joker{
     blueprint_compat = true,
     eternal_compat = true,
     rarity = 2,
+    cost = 4,
     update = function(self, card, dt)
         if card.ability.extra.delay == 60 / card.ability.extra.FPS then
             card.ability.extra.x_pos = (card.ability.extra.x_pos + 1) % 40
@@ -545,6 +547,10 @@ SMODS.Joker{
         else
             card.ability.extra.delay = card.ability.extra.delay + 1
         end
+    end,
+
+    add_to_deck = function (self, card, dt)
+        play_sound("EF_LetsGoGamblingSound", 1, 1)
     end,
 
     set_badges = function(self, card, badges)
@@ -638,6 +644,7 @@ SMODS.Joker{
     blueprint_compat = false,
     eternal_compat = true,
     rarity = 3,
+    cost = 8,
 
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: alperen_pro', G.C.RARITY.Common, G.C.BLACK, 0.8 )
