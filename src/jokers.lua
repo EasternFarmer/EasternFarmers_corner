@@ -716,11 +716,32 @@ SMODS.Joker{
 	end,
 }
 
---[[
-
-
-
-I would be called fertilizer 
-(I'm using x and y right now I don't know how much mult and chips yet)
-Gives x amount of chips and y amount of mult for each plant joker you have -- wizard
-]]
+SMODS.Joker {
+    name = "Fertilizer",
+    key = "fertilizer",
+    loc_txt = {
+        name = 'Fertilizer',
+        text = {
+            '{C:green}Plant{} Jokers give',
+            '{C:chips}+#1#{} Chips and {C:mult}+#2#{} Mult.',
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra.chips, card.ability.extra.mult}}
+    end,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    rarity = 2,
+    cost = 4,
+    atlas = "missing_joker",
+    config = { extra = { chips = 20, mult = 20 } },
+    calculate = function(self, card, context)
+        if context.other_joker and context.other_joker.config.center.rarity == "EF_plant" then
+            return {
+                mult = card.ability.extra.mult,
+                chips = card.ability.extra.chips
+            }
+        end
+    end,
+}
