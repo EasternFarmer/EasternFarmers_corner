@@ -297,42 +297,40 @@ SMODS.Joker{
 
     end
 }
----@diagnostic disable-next-line: undefined-global 
-if not Talisman then -- creates a error (probably talisman changes hand_chips to a table)
-    SMODS.Joker{
-        name = "Rootabaga", -- Idea Credit: wimpyzombie22 @ discord
-        key = "rootabaga",
-        loc_txt = {
-            name = 'Rootabaga',
-            text = {
-                'Takes the square root of',
-                'your hands {C:chips}Chips{},',
-                'and adds that number',
-                'to your {C:mult}Mult{}'
+
+SMODS.Joker{
+    name = "Rootabaga", -- Idea Credit: wimpyzombie22 @ discord
+    key = "rootabaga",
+    loc_txt = {
+        name = 'Rootabaga',
+        text = {
+            'Takes the square root of',
+            'your hands {C:chips}Chips{},',
+            'and adds that number',
+            'to your {C:mult}Mult{}'
+        }
+    },
+    unlocked = true,
+    discovered = true,
+    atlas = "Jokers",
+    pos = {x = 6, y = 0},
+    blueprint_compat = true,
+    eternal_compat = true,
+    rarity = "EF_plant",
+
+    set_badges = function(self, card, badges)
+        badges[#badges+1] = create_badge('Idea Credit: wimpyzombie22', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            local chips = hand_chips or 0
+            return {
+                mult = math.sqrt(lenient_bignum(chips))
             }
-        },
-        unlocked = true,
-        discovered = true,
-        atlas = "Jokers",
-        pos = {x = 6, y = 0},
-        blueprint_compat = true,
-        eternal_compat = true,
-        rarity = "EF_plant",
-
-        set_badges = function(self, card, badges)
-            badges[#badges+1] = create_badge('Idea Credit: wimpyzombie22', G.C.RARITY.Common, G.C.BLACK, 0.8 )
-        end,
-        calculate = function(self, card, context)
-            if context.joker_main then
-                local chips = hand_chips or 0
-                return {
-                    mult = math.sqrt(chips)
-                }
-            end
-
         end
-    }
-end
+
+    end
+}
 SMODS.Joker{
     --[[
     seed
