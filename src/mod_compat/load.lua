@@ -1,11 +1,11 @@
 local curr_dir = "src/mod_compat/"
 
 ---@diagnostic disable-next-line: undefined-global
-if JokerDisplay then
-    assert(SMODS.load_file(curr_dir.."joker_display.lua"))()
+if not Talisman then
+    assert(SMODS.load_file(curr_dir.."no_talisman.lua"))()
 end
 
 ---@diagnostic disable-next-line: undefined-global
-if not Talisman then
-    assert(SMODS.load_file(curr_dir.."no_talisman.lua"))()
+if JokerDisplay then
+    assert(SMODS.load_file(curr_dir.."joker_display.lua"))()
 end

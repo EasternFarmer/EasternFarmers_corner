@@ -72,6 +72,7 @@ SMODS.Joker{
     eternal_compat = false,
     cost = 6,
     rarity = "EF_plant",
+    atlas = "missing_joker",
 
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
@@ -142,7 +143,7 @@ SMODS.Joker{
 	calculate = function(self, card, context)
         if context.joker_main then
     		return {
-                xmult = 1.5
+                xmult = card.ability.extra.xmult
             }
         end
 	end,
@@ -175,6 +176,7 @@ SMODS.Joker{
     blueprint_compat = true,
     eternal_compat = false,
     rarity = "EF_plant",
+    atlas = "missing_joker",
 
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
@@ -294,7 +296,6 @@ SMODS.Joker{
                 end
             }
         end
-
     end
 }
 
@@ -415,6 +416,7 @@ SMODS.Joker{
     blueprint_compat = false,
     eternal_compat = false,
     rarity = 'EF_plant',
+    atlas = "missing_joker",
 
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: relatal', G.C.RARITY.Common, G.C.BLACK, 0.8 )
@@ -474,6 +476,7 @@ SMODS.Joker{
     eternal_compat = false,
     rarity = "EF_plant",
     cost = 0,
+    atlas = "missing_joker",
     set_badges = function(self, card, badges)
          badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
      end,
@@ -619,6 +622,7 @@ SMODS.Joker{
     blueprint_compat = true,
     eternal_compat = true,
     rarity = "EF_plant",
+    atlas = "missing_joker",
 
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: wizard_man98082', G.C.RARITY.Common, G.C.BLACK, 0.8 )
@@ -632,6 +636,7 @@ SMODS.Joker{
         end
     end
 }
+
 SMODS.Joker{
     --[[
     "Everytime Wheel of Fortune misses, it randomly upgrades one of the hands"
@@ -668,12 +673,51 @@ SMODS.Joker{
                 local hand_chosen = EF.get_most_played_hands()[1].key
                 SMODS.calculate_effect({message = "Level up!"}, card)
                 SMODS.smart_level_up_hand(nil, hand_chosen, false)
+                return
+        end
+    end
+}
+
+SMODS.Joker{
+    --[[
+    oh i got an idea if ur interested, joker that re-triggers plant jokers x times, 
+    increased by 1 everytime u beat the plant or water boss blind and uh called good harvest? --._.fr
+    ]]
+    name = "Good Harvest", -- Idea Credit: alperen_pro @ discord
+    key = "goodharvest",
+    loc_txt = {
+        name = 'Good Harvest',
+        text = {
+            'Retriggers {C:green}Plant{} jokers #1# times',
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return {vars = {card.ability.extra.retriggers}}
+    end,
+    config = { extra = {retriggers = 1} },
+    atlas = "missing_joker",
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    eternal_compat = true,
+    rarity = 3,
+    cost = 8,
+
+    set_badges = function(self, card, badges)
+ 		badges[#badges+1] = create_badge('Idea Credit: ._.fr', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 	end,
+    calculate = function(self, card, context)
+		if context.retrigger_joker_check and not context.blueprint then
+            print(context.other_card.config.center.rarity)
+            if context.other_card.config.center.rarity == "EF_plant" then
+                return {repetitions = card.ability.extra.retriggers}
             end
         end
+	end,
 }
+
 --[[
-oh i got an idea if ur interested, joker that re-triggers plant jokers x times, 
-increased by 1 everytime u beat the plant or water boss blind and uh called good harvest? --._.fr
+
 
 
 I would be called fertilizer 

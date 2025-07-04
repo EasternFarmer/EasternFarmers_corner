@@ -6,10 +6,13 @@ jd_def["j_EF_dandelion"] = {
         {
             border_nodes = {
                 { text = "X" },
-                { ref_table = "G.GAME", ref_value = "EF_dandelion_xmult", retrigger_type = "exp" }
+                { ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" }
             }
         }
     },
+    calc_function = function(card)
+        card.joker_display_values.xmult =  G.GAME.EF.dandelion_xmult
+        end
 }
 
 jd_def["j_EF_ghostpepper"] = {
@@ -17,10 +20,13 @@ jd_def["j_EF_ghostpepper"] = {
         {
             border_nodes = {
                 { text = "X" },
-                { ref_table = "card.ability.extra", ref_value = "xmult", retrigger_type = "exp" }
+                { ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" }
             }
         }
     },
+    calc_function = function(card)
+        card.joker_display_values.xmult = card.ability.extra.xmult
+    end
 }
 
 jd_def["j_EF_plantform"] = {
@@ -28,29 +34,38 @@ jd_def["j_EF_plantform"] = {
         {
             border_nodes = {
                 { text = "X" },
-                { ref_table = "card.ability.extra", ref_value = "xmult", retrigger_type = "exp" }
+                { ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" }
             }
         }
     },
+    calc_function = function(card)
+        card.joker_display_values.xmult = card.ability.extra.xmult
+    end
 }
 
 jd_def["j_EF_grass"] = {
     text = {
         { text = "+" },
-        { ref_table = "card.ability.extra", ref_value = "current_chips", retrigger_type = "mult" }
+        { ref_table = "card.joker_display_values", ref_value = "current_chips", retrigger_type = "mult" }
     },
-    text_config = { colour = G.C.CHIPS }
+    text_config = { colour = G.C.CHIPS },
+    calc_function = function(card)
+        card.joker_display_values.current_chips = card.ability.extra.current_chips
+    end
 }
 
 jd_def["j_EF_sunflower"] = {
     text = {
         { text = "+$" },
-        { ref_table = "card.ability.extra", ref_value = "dollars" },
+        { ref_table = "card.joker_display_values", ref_value = "dollars", retrigger_type = "mult" },
     },
     text_config = { colour = G.C.GOLD },
     reminder_text = {
         { text = "(Hands)" },
     },
+    calc_function = function(card)
+        card.joker_display_values.dollars = card.ability.extra.dollars
+    end
 }
 
 jd_def["j_EF_rootabaga"] = {
@@ -75,7 +90,7 @@ jd_def["j_EF_rootabaga"] = {
         --     end
         -- end
         local chips = hand_chips or 0
-        local mult = math.sqrt(chips)
+        local mult = math.sqrt(lenient_bignum(chips))
         card.joker_display_values.mult = mult
     end
 }
@@ -98,9 +113,12 @@ jd_def["j_EF_seed"] = {
 jd_def["j_EF_grapevine"] = {
     text = {
         { text = "+" },
-        { ref_table = "card.ability.extra", ref_value = "mult", retrigger_type = "mult" }
+        { ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult" }
     },
     text_config = { colour = G.C.MULT },
+    calc_function = function(card)
+        card.joker_display_values.mult = card.ability.extra.mult
+    end
 }
 
 jd_def["j_EF_spreadingvines"] = {
@@ -116,6 +134,14 @@ jd_def["j_EF_spreadingvines"] = {
             card.joker_display_values.chips = eval_
         else
             card.joker_display_values.chips = eval_*card.ability.extra.chips
+        end
+    end
+}
+
+jd_def["j_EF_goodharvest"] = {
+    retrigger_joker_function = function (card, retrigger_joker)
+        if card ~= retrigger_joker and card.config.center.rarity == "EF_plant" then
+            return retrigger_joker.ability.extra.retriggers
         end
     end
 }
