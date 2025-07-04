@@ -27,20 +27,14 @@ SMODS.Joker{
     end,
 
     calculate = function(self, card, context)
-        if context.setting_blind then
+        if context.setting_blind or context.forcetrigger then
+            G.GAME.current_round.hands_left = card.ability.extra.hands
             return {
+                message = "+"..tostring(card.ability.extra.discards).." Discards",
                 func = function()
                     G.GAME.current_round.discards_left = G.GAME.current_round.discards_left + card.ability.extra.discards
                     return true
                 end,
-                extra = {
-                    func = function()
-                        G.GAME.current_round.hands_left = card.ability.extra.hands
-                        return true
-                    end,
-                colour = G.C.GREEN
-                },
-                message = "+"..tostring(card.ability.extra.discards).." Discards"
             }
         end
     end
@@ -70,6 +64,7 @@ SMODS.Joker{
     discovered = true,
     blueprint_compat = true,
     eternal_compat = false,
+    demicoloncompat = true,
     cost = 6,
     rarity = "EF_plant",
     atlas = "missing_joker",
@@ -79,7 +74,7 @@ SMODS.Joker{
  	end,
 
     calculate = function(self, card, context)
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             return {
                 xmult = card.ability.extra.xmult
             }
@@ -124,6 +119,7 @@ SMODS.Joker{
     rarity = "EF_plant",
     eternal_compat = true,
     blueprint_compat = true,
+    demicoloncompat = true,
     update = function(self, card, dt)
 		if G.deck and card.added_to_deck then
 			for i, v in pairs(G.deck.cards) do
@@ -141,7 +137,7 @@ SMODS.Joker{
 		end
 	end,
 	calculate = function(self, card, context)
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
     		return {
                 xmult = card.ability.extra.xmult
             }
@@ -175,6 +171,7 @@ SMODS.Joker{
     discovered = true,
     blueprint_compat = true,
     eternal_compat = false,
+    demicoloncompat = true,
     rarity = "EF_plant",
     atlas = "missing_joker",
 
@@ -192,7 +189,7 @@ SMODS.Joker{
             G.GAME.EF_dandelion_xmult = G.GAME.EF_dandelion_xmult + 0.5
             SMODS.calculate_effect({message = G.GAME.EF_dandelion_xmult.."X", color = G.C.MULT}, card)
         end
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             G.GAME.EF_dandelion_xmult = G.GAME.EF_dandelion_xmult or 1.0
             return {
                 xmult = G.GAME.EF_dandelion_xmult
@@ -225,6 +222,7 @@ SMODS.Joker{
     discovered = true,
     eternal_compat = true,
     blueprint_compat = true,
+    demicoloncompat = true,
     rarity = "EF_plant",
 
     set_badges = function(self, card, badges)
@@ -244,7 +242,7 @@ SMODS.Joker{
             }))
         end
 
-        if context.joker_main then
+        if context.joker_main  or context.forcetrigger then
             return {
                 chips = card.ability.extra.current_chips
             }
@@ -275,6 +273,7 @@ SMODS.Joker{
     discovered = true,
     blueprint_compat = false,
     eternal_compat = true,
+    demicoloncompat = true,
     rarity = "EF_plant",
 
     set_badges = function(self, card, badges)
@@ -282,7 +281,7 @@ SMODS.Joker{
  	end,
 
     calculate = function(self, card, context)
-        if context.joker_main and not context.blueprint then
+        if (context.joker_main or context.forcetrigger) and not context.blueprint then
             G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.dollars
             return {
                 dollars = card.ability.extra.dollars,
@@ -317,13 +316,14 @@ SMODS.Joker{
     pos = {x = 6, y = 0},
     blueprint_compat = true,
     eternal_compat = true,
+    demicoloncompat = true,
     rarity = "EF_plant",
 
     set_badges = function(self, card, badges)
         badges[#badges+1] = create_badge('Idea Credit: wimpyzombie22', G.C.RARITY.Common, G.C.BLACK, 0.8 )
     end,
     calculate = function(self, card, context)
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             local chips = hand_chips or 0
             return {
                 mult = math.sqrt(lenient_bignum(chips))
@@ -359,6 +359,7 @@ SMODS.Joker{
     discovered = true,
     blueprint_compat = false,
     eternal_compat = false,
+    demicoloncompat = true,
     rarity = 1,
     cost = 4,
 
@@ -367,8 +368,10 @@ SMODS.Joker{
  	end,
 
     calculate = function(self, card, context)
-        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
-            if pseudorandom('EF_Seed') < G.GAME.probabilities.normal / card.ability.extra.odds then
+        if context.forcetrigger or (context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint) then
+            if (pseudorandom('EF_Seed') < G.GAME.probabilities.normal / card.ability.extra.odds) or
+                context.forcetrigger or card.ability.cry_rigged -- cryptid compat
+            then
                 card:start_dissolve()
                 G.E_MANAGER:add_event(Event({
                     func = (function()
@@ -415,6 +418,7 @@ SMODS.Joker{
     discovered = true,
     blueprint_compat = false,
     eternal_compat = false,
+    demicoloncompat = true,
     rarity = 'EF_plant',
     atlas = "missing_joker",
 
@@ -423,7 +427,7 @@ SMODS.Joker{
  	end,
 
     calculate = function(self, card, context)
-        if context.selling_self and not context.blueprint then
+        if (context.selling_self or context.forcetrigger) and not context.blueprint then
             for i, joker in ipairs(G.jokers.cards) do
                 print(joker.ability)
                 if joker.ability.name == 'Popcorn' then
@@ -467,13 +471,14 @@ SMODS.Joker{
         }
     },
     loc_vars = function(self, info_queue, card)
-        return { vars = {card.ability.extra.mult, card.ability.extra.plus_mult, card.ability.extra.hand_size} }
+        return { vars = {card.ability.extra.mult, card.ability.extra.plus_mult, card.ability.immutable.hand_size} }
     end,
-    config = { extra = {mult = 4, plus_mult = 2, hand_size = -1} },
+    config = { extra = {mult = 4, plus_mult = 2}, immutable = {hand_size = -1} },
     unlocked = true,
     discovered = true,
     blueprint_compat = false,
     eternal_compat = false,
+    demicoloncompat = true,
     rarity = "EF_plant",
     cost = 0,
     atlas = "missing_joker",
@@ -482,14 +487,14 @@ SMODS.Joker{
      end,
 
     add_to_deck = function(self, card, from_debuff)
-        G.hand:change_size(card.ability.extra.hand_size)
+        G.hand:change_size(card.ability.immutable.hand_size)
         G.GAME.EF_grapevine_max_copy = 1
     end,
     remove_from_deck = function(self, card, from_debuff)
-        G.hand:change_size(-card.ability.extra.hand_size)
+        G.hand:change_size(-card.ability.immutable.hand_size)
     end,
     calculate = function(self, card, context)
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             return {
                 mult = card.ability.extra.mult
             }
@@ -554,6 +559,7 @@ SMODS.Joker{
     discovered = true,
     blueprint_compat = true,
     eternal_compat = true,
+    demicoloncompat = true,
     rarity = 2,
     cost = 4,
     update = function(self, card, dt)
@@ -575,7 +581,9 @@ SMODS.Joker{
  	end,
 
     calculate = function(self, card, context)
-        if context.joker_main then
+        if context.forcetrigger or (context.joker_main and card.ability.cry_rigged) then -- cryptid compat
+            return { xmult = card.ability.extra.Xmult_for_hit_50}
+        elseif context.joker_main then
             local random_num = pseudorandom('GamblersDream', 1, 100)
             print(random_num)
             if 1 <= random_num and random_num < 50 then
@@ -621,6 +629,7 @@ SMODS.Joker{
     discovered = true,
     blueprint_compat = true,
     eternal_compat = true,
+    demicoloncompat = true,
     rarity = "EF_plant",
     atlas = "missing_joker",
 
@@ -629,7 +638,7 @@ SMODS.Joker{
  	end,
 
     calculate = function(self, card, context)
-        if context.joker_main then
+        if context.joker_main or context.forcetrigger then
             return {
                 chips = G.GAME.hands[context.scoring_name].played * card.ability.extra.chips
             }
@@ -662,6 +671,7 @@ SMODS.Joker{
     discovered = true,
     blueprint_compat = false,
     eternal_compat = true,
+    demicoloncompat = true, immutable = true, --cryptid
     rarity = 3,
     cost = 8,
 
@@ -669,7 +679,7 @@ SMODS.Joker{
  		badges[#badges+1] = create_badge('Idea Credit: alperen_pro', G.C.RARITY.Common, G.C.BLACK, 0.8 )
  	end,
     calculate = function(self, card, context)
-        if context.wheel_of_fortune_fail and not context.blueprint then -- wheel.toml
+        if (context.wheel_of_fortune_fail or context.forcetrigger) and not context.blueprint then -- wheel.toml
                 local hand_chosen = EF.get_most_played_hands()[1].key
                 SMODS.calculate_effect({message = "Level up!"}, card)
                 SMODS.smart_level_up_hand(nil, hand_chosen, false)

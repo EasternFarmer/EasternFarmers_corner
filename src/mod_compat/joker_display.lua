@@ -11,7 +11,7 @@ jd_def["j_EF_dandelion"] = {
         }
     },
     calc_function = function(card)
-        card.joker_display_values.xmult =  G.GAME.EF.dandelion_xmult
+        card.joker_display_values.xmult =  G.GAME.EF_dandelion_xmult
         end
 }
 
