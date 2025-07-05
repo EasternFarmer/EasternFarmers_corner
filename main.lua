@@ -1,6 +1,7 @@
 SMODS.optional_features.retrigger_joker = true
 
 -- assert(SMODS.load_file("src/mod_config.lua"))()
+assert(SMODS.load_file("src/colors.lua"))() -- one override here
 assert(SMODS.load_file("src/helper_functions.lua"))()
 assert(SMODS.load_file("src/sounds.lua"))()
 assert(SMODS.load_file("src/atlas.lua"))()

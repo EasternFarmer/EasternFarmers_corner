@@ -49,12 +49,12 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'wheel_of_doom',
     set = 'plant_spectral',
-    config = { extra = {} },
+    config = { extra = {extra = {created = 5}} },
     loc_txt = {
         name = 'Wheel of Doom',
         text = {
             'Destroys all cards in',
-            'deck, adds {C:gold}2{} {C:edition}polychrome{}',
+            'deck, adds {C:gold}#1#{} {C:edition}polychrome{}',
             '{C:enhanced}steel{} red seal jacks'
         }
     },
@@ -65,7 +65,7 @@ SMODS.Consumable {
         info_queue[#info_queue+1] = G.P_CENTERS.e_polychrome
         info_queue[#info_queue+1] = G.P_CENTERS.m_steel
         info_queue[#info_queue+1] = G.P_SEALS["Red"]
-        return { vars = {} }
+        return { vars = {card.ability.extra.created} }
     end,
     use = function(self, card, area, copier)
         for i, v in ipairs(G.deck.cards) do
@@ -74,16 +74,17 @@ SMODS.Consumable {
         for i, v in ipairs(G.hand.cards) do
             v:start_dissolve()
         end
-        local card_1 = SMODS.add_card  { set = "Base", edition="e_polychrome", enhancement = "m_steel", seal = "Red", front = "S_J", area = G.deck }
-        local card_2 = SMODS.add_card  { set = "Base", edition="e_polychrome", enhancement = "m_steel", seal = "Red", front = "S_J", area = G.deck }
+        local cards = {}
+        for i = 1, card.ability.extra.created do
+            local card_1 = SMODS.add_card  { set = "Base", edition="e_polychrome", enhancement = "m_steel", seal = "Red", front = "S_J", area = G.deck }
+            cards[#cards+1] = card_1
+        end
         G.E_MANAGER:add_event(Event({
             func = function()
-                card_1:start_materialize()
-                G.GAME.blind:debuff_card(card_1)
-
-                card_2:start_materialize()
-                G.GAME.blind:debuff_card(card_2)
-                
+                for _, v in ipairs(cards) do
+                    v:start_materialize()
+                    G.GAME.blind:debuff_card(v)
+                end
                 G.hand:sort()
                 return true
             end
@@ -162,7 +163,7 @@ SMODS.Consumable {
             end
         )
 
-        pseudoshuffle(temp_hand, 2137)
+        pseudoshuffle(temp_hand, pseudoseed("starfruit"))
         
         if G.hand and #G.hand.cards - card.ability.extra.editions_added > 0 then
             for i = 1, (#G.hand.cards - card.ability.extra.editions_added) do destroyed_cards[#destroyed_cards + 1] = temp_hand[i] end
@@ -186,15 +187,26 @@ SMODS.Consumable {
     end
 }
 
-
---[[
-slime mold --plantform
-root spectral 
-destroys 2 random jokers, creates a blueprint
-
-starfruit --plantform
-root spectral
-adds polychrome to 3 random cards in hand, destroy all other cards in hand
-
-
-]]
+-- SMODS.Consumable {
+--     key = '???',
+--     set = 'plant_spectral',
+--     config = { extra = {} },
+--     loc_txt = {
+--         name = '???',
+--         text = {
+--             "adds negative to a random joker, destroys entire hand"
+--         }
+--     },
+--     atlas = "Spectrals",
+--     pos = {x = 2, y = 0},
+--     discovered = true,
+--     loc_vars = function(self, info_queue, card)
+--         return { vars = {card.ability.extra.editions_added, } }
+--     end,
+--     use = function(self, card, area, copier)
+        
+--     end,
+--     can_use = function(self, card)
+--         return G.hand and #G.hand.cards > 0
+--     end
+-- }

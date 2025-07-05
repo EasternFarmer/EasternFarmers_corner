@@ -18,7 +18,10 @@ SMODS.Challenge {
         type = 'Challenge Deck',
         cards = {
             {s='S',r='J',e="m_steel",d="polychrome",g="Red"},
-            {s='S',r='J',e="m_steel",d="polychrome",g="Red"}
+            {s='S',r='J',e="m_steel",d="polychrome",g="Red"},
+            {s='S',r='J',e="m_steel",d="polychrome",g="Red"},
+            {s='S',r='J',e="m_steel",d="polychrome",g="Red"},
+            {s='S',r='J',e="m_steel",d="polychrome",g="Red"},
         }
     }
 }

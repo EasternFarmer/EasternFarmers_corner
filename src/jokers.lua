@@ -173,7 +173,8 @@ SMODS.Joker{
     eternal_compat = false,
     demicoloncompat = true,
     rarity = "EF_plant",
-    atlas = "missing_joker",
+    atlas = "Jokers",
+    pos = {x = 7, y = 0},
 
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
@@ -698,14 +699,15 @@ SMODS.Joker{
     loc_txt = {
         name = 'Good Harvest',
         text = {
-            'Retriggers {C:green}Plant{} jokers #1# times',
+            'Retriggers {C:ef_plant}Plant{} jokers #1# times',
         }
     },
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.extra.retriggers}}
     end,
     config = { extra = {retriggers = 1} },
-    atlas = "missing_joker",
+    atlas = "Jokers",
+    pos = {x = 8, y = 0},
     unlocked = true,
     discovered = true,
     blueprint_compat = false,
@@ -732,7 +734,7 @@ SMODS.Joker {
     loc_txt = {
         name = 'Fertilizer',
         text = {
-            '{C:green}Plant{} Jokers give',
+            '{C:ef_plant}Plant{} Jokers give',
             '{C:chips}+#1#{} Chips and {C:mult}+#2#{} Mult.',
         }
     },
@@ -744,7 +746,8 @@ SMODS.Joker {
     blueprint_compat = true,
     rarity = 2,
     cost = 4,
-    atlas = "missing_joker",
+    atlas = "Jokers",
+    pos = {x=9,y=0},
     config = { extra = { chips = 20, mult = 20 } },
     calculate = function(self, card, context)
         if context.other_joker and context.other_joker.config.center.rarity == "EF_plant" then
