@@ -370,7 +370,7 @@ SMODS.Joker{
 
     calculate = function(self, card, context)
         if context.forcetrigger or (context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint) then
-            if (pseudorandom('EF_Seed') < G.GAME.probabilities.normal / card.ability.extra.odds) or
+            if SMODS.pseudorandom_probability(card, "EF_seed", 1, 6) or
                 context.forcetrigger or card.ability.cry_rigged -- cryptid compat
             then
                 card:start_dissolve()
@@ -430,7 +430,6 @@ SMODS.Joker{
     calculate = function(self, card, context)
         if (context.selling_self or context.forcetrigger) and not context.blueprint then
             for i, joker in ipairs(G.jokers.cards) do
-                print(joker.ability)
                 if joker.ability.name == 'Popcorn' then
                     joker.ability.extra = joker.ability.extra / card.ability.extra.Xvar
                 elseif joker.ability.name == 'Ramen' then
@@ -586,7 +585,6 @@ SMODS.Joker{
             return { xmult = card.ability.extra.Xmult_for_hit_50}
         elseif context.joker_main then
             local random_num = pseudorandom('GamblersDream', 1, 100)
-            print(random_num)
             if 1 <= random_num and random_num < 50 then
                 return {
                     mult = -random_num
@@ -719,8 +717,7 @@ SMODS.Joker{
  		badges[#badges+1] = create_badge('Idea Credit: ._.fr', G.C.RARITY.Common, G.C.BLACK, 0.8 )
  	end,
     calculate = function(self, card, context)
-		if context.retrigger_joker_check and not context.blueprint then
-            print(context.other_card.config.center.rarity)
+		if context.retrigger_joker_check and not context.retrigger_joker and not context.blueprint then
             if context.other_card.config.center.rarity == "EF_plant" then
                 return {repetitions = card.ability.extra.retriggers}
             end
@@ -755,6 +752,39 @@ SMODS.Joker {
                 mult = card.ability.extra.mult,
                 chips = card.ability.extra.chips
             }
+        end
+    end,
+}
+
+SMODS.Joker {
+    name = "Photosynthesis",
+    key = "photosynthesis",
+    loc_txt = {
+        name = 'Photosynthesis',
+        text = {
+            'If your computer time is',
+            'between {C:gold}#1#{} and {C:gold}#2#{} {C:ef_plant}Plant{} jokers',
+            'each give {X:mult,C:white}X#3#{} Mult'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return {vars = {EF.normal_hour_to_am_pm(card.ability.immutable.min_hour), EF.normal_hour_to_am_pm(card.ability.immutable.max_hour), card.ability.extra.xmult}}
+    end,
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    rarity = 2,
+    cost = 4,
+    atlas = "missing_joker",
+    --pos = {x=9,y=0},
+    config = { extra = {xmult = 2}, immutable = { min_hour = 8, max_hour = 20} },
+    calculate = function(self, card, context)
+        if context.other_joker and context.other_joker.config.center.rarity == "EF_plant" then
+            if EF.photosynthesis_hour_check(card) then
+                return {
+                    xmult = card.ability.extra.xmult
+                }
+            end 
         end
     end,
 }

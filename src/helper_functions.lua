@@ -1,4 +1,4 @@
-EF = {}
+EF = EF or {}
 
 function EF.destroy_random_joker(seed)
     if not seed then
@@ -43,4 +43,40 @@ function EF.get_most_played_hands()
   end)
 
   return hands
+end
+
+---comment
+---@param x number
+---@return string
+function EF.normal_hour_to_am_pm(x) -- maybe add a config option to toggle between 12h and 24h
+  if x < 0 or x > 24 then
+    return "ERR at EF.normal_hour_to_am_pm"
+  elseif x == 0 or x == 24 then
+    return "12 AM"
+  elseif 1 <= x and x <= 11 then
+    return x.." AM"
+  elseif 12 <= x and x <= 23 then
+    return (x-12).." PM"
+  end
+  return "wtf at EF.normal_hour_to_am_pm"
+end
+
+---@return osdate
+function EF.get_time_table()
+  ---@diagnostic disable-next-line: return-type-mismatch
+  return os.date("*t", os.time())
+end
+
+---@param card Card
+---@return boolean
+function EF.photosynthesis_hour_check(card)
+  G.GAME.EF_UV_lamp = G.GAME.EF_UV_lamp or false
+  local time = EF.get_time_table()
+  local hour = time.hour + time.min/60
+  if (card.ability.immutable.min_hour <= hour and hour <= card.ability.immutable.max_hour) -- normal check
+      or G.GAME.EF_UV_lamp -- voucher
+      then
+    return true
+  end
+  return false
 end

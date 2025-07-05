@@ -1,4 +1,5 @@
 ---@diagnostic disable: undefined-global
+---@type table<JDJokerDefinition>
 local jd_def = JokerDisplay.Definitions
 
 jd_def["j_EF_dandelion"] = {
@@ -98,15 +99,16 @@ jd_def["j_EF_rootabaga"] = {
 jd_def["j_EF_seed"] = {
     text = {
         { text = "(" },
-        { ref_table = "card.joker_display_values", ref_value = "gameprob" },
+        { ref_table = "card.joker_display_values", ref_value = "nominator" },
         { text = " in " },
-        { ref_table = "card.joker_display_values", ref_value = "odds" },
+        { ref_table = "card.joker_display_values", ref_value = "denominator" },
         { text = ")" },
     },
     text_config = { colour = G.C.GREEN, scale = 0.3 },
     calc_function = function(card)
-        card.joker_display_values.gameprob = tostring(G.GAME.probabilities.normal)
-        card.joker_display_values.odds = tostring(card.ability.extra.odds)
+        local nominator, denominator = SMODS.get_probability_vars(card, 1, 6)
+        card.joker_display_values.nominator = nominator
+        card.joker_display_values.denominator = denominator
     end
 }
 
@@ -151,7 +153,7 @@ jd_def["j_EF_fertilizer"] = {
         { text = "(" },
         { ref_table = "card.joker_display_values", ref_value = "count",          colour = G.C.ORANGE },
         { text = "x" },
-        { text = "Plant", colour = G.C.GREEN },
+        { text = "Plant", colour = G.C.EF.PLANT },
         { text = ")" },
     },
     calc_function = function(card)
@@ -169,6 +171,35 @@ jd_def["j_EF_fertilizer"] = {
         return {
             mult = (card.config.center.rarity == "EF_plant" and mod_joker.ability.extra.mult * JokerDisplay.calculate_joker_triggers(mod_joker) or nil),
             chips = (card.config.center.rarity == "EF_plant" and mod_joker.ability.extra.chips * JokerDisplay.calculate_joker_triggers(mod_joker) or nil),
+        }
+    end
+}
+
+jd_def["j_EF_photosynthesis"] = {
+    text = {
+        {ref_table = "card.joker_display_values", ref_value = "effective", colour = G.C.GOLD},
+        {text = " Plant", colour = G.C.EF.PLANT},
+        {text = " jokers"}
+    },
+    calc_function = function(card)
+        local count = 0
+        if G.jokers then
+            for _, joker_card in ipairs(G.jokers.cards) do
+                if joker_card.config.center.rarity and joker_card.config.center.rarity == "EF_plant" then
+                    count = count + 1
+                end
+            end
+        end
+
+        if count == 0 or EF.photosynthesis_hour_check(card) then
+            card.joker_display_values.effective = count
+        else
+            card.joker_display_values.effective = "Effective 0"
+        end
+    end,
+    mod_function = function(card, mod_joker)
+        return {
+            x_mult = (EF.photosynthesis_hour_check(mod_joker) and card.config.center.rarity == "EF_plant" and mod_joker.ability.extra.xmult ^ JokerDisplay.calculate_joker_triggers(mod_joker) or nil),
         }
     end
 }
