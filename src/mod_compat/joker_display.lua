@@ -191,7 +191,7 @@ jd_def["j_EF_photosynthesis"] = {
             end
         end
 
-        if count == 0 or EF.photosynthesis_hour_check(card) then
+        if count == 0 or EF.hour_check(card) then
             card.joker_display_values.effective = count
         else
             card.joker_display_values.effective = "Effective 0"
@@ -199,7 +199,7 @@ jd_def["j_EF_photosynthesis"] = {
     end,
     mod_function = function(card, mod_joker)
         return {
-            x_mult = (EF.photosynthesis_hour_check(mod_joker) and card.config.center.rarity == "EF_plant" and mod_joker.ability.extra.xmult ^ JokerDisplay.calculate_joker_triggers(mod_joker) or nil),
+            x_mult = (EF.hour_check(mod_joker) and card.config.center.rarity == "EF_plant" and mod_joker.ability.extra.xmult ^ JokerDisplay.calculate_joker_triggers(mod_joker) or nil),
         }
     end
 }

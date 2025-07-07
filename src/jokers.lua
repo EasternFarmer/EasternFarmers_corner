@@ -780,7 +780,7 @@ SMODS.Joker {
     config = { extra = {xmult = 2}, immutable = { min_hour = 8, max_hour = 20} },
     calculate = function(self, card, context)
         if context.other_joker and context.other_joker.config.center.rarity == "EF_plant" then
-            if EF.photosynthesis_hour_check(card) then
+            if EF.hour_check(card) then
                 return {
                     xmult = card.ability.extra.xmult
                 }

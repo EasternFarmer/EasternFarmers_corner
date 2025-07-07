@@ -67,14 +67,15 @@ function EF.get_time_table()
   return os.date("*t", os.time())
 end
 
+---performs a time check using `immutable.min_hour` and `immutable.max_hour` from card's config
 ---@param card Card
 ---@return boolean
-function EF.photosynthesis_hour_check(card)
-  G.GAME.EF_UV_lamp = G.GAME.EF_UV_lamp or false
+function EF.hour_check(card)
+  G.GAME.EF_stopwatch_voucher = G.GAME.EF_stopwatch_voucher or false
   local time = EF.get_time_table()
   local hour = time.hour + time.min/60
   if (card.ability.immutable.min_hour <= hour and hour <= card.ability.immutable.max_hour) -- normal check
-      or G.GAME.EF_UV_lamp -- voucher
+      or G.GAME.EF_stopwatch_voucher -- voucher
       then
     return true
   end

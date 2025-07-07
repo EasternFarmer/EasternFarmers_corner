@@ -1,10 +1,10 @@
 SMODS.Voucher {
-    key = 'uv_lamp',
+    key = 'stopwatch',
     atlas = "missing_joker",
     config = { extra = {} },
     discovered = true,
     loc_txt = {
-        name = "UV Lamp",
+        name = "Stopwatch",
         text = {
             "Makes {C:gold}All{} {C:blue}time{} based jokers",
             "ignore the current {C:blue}time{}"
@@ -16,7 +16,7 @@ SMODS.Voucher {
     redeem = function(self, card)
         G.E_MANAGER:add_event(Event({
             func = function()
-                G.GAME.EF_UV_lamp = true
+                G.GAME.EF_stopwatch_voucher = true
                 return true
             end
         }))
