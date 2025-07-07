@@ -1,0 +1,57 @@
+SMODS.Joker{
+    --[[
+    seed
+    1 in 6 chance of getting destroyed at the end of the round
+    when destroyed, the shop will guarrantee a plant booster pack
+    ]]
+    key = "seed", -- Idea Credit: plantform @ discord
+    loc_txt = {
+        name = 'Seed',
+        text = {
+            '{C:green}#1# in #2#{} chance of getting',
+            'destroyed at the end of the round',
+            'when destroyed, creates a {C:spectral,T:t_EF_small_plant_pack_tag}Garden tag{}'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue + 1] = { key = 'tag_EF_small_plant_pack_tag', set = 'Tag' }
+        return {vars = {G.GAME.probabilities.normal, card.ability.extra.odds}}
+    end,
+    config = { extra = {odds = 6} },
+    atlas = "Jokers",
+    pos = {x=5,y=0},
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    eternal_compat = false,
+    demicoloncompat = true,
+    rarity = 1,
+    cost = 4,
+
+    set_badges = function(self, card, badges)
+ 		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 	end,
+
+    calculate = function(self, card, context)
+        if context.forcetrigger or (context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint) then
+            if SMODS.pseudorandom_probability(card, "EF_seed", 1, 6) or
+                context.forcetrigger or card.ability.cry_rigged -- cryptid compat
+            then
+                card:start_dissolve()
+                G.E_MANAGER:add_event(Event({
+                    func = (function()
+                        add_tag(Tag('tag_EF_small_plant_pack_tag'))
+                        return true
+                    end)
+                }))
+                return {
+                    message = localize('k_extinct_ex')
+                }
+            else
+                return {
+                    message = localize('k_safe_ex')
+                }
+            end
+        end
+    end
+}
