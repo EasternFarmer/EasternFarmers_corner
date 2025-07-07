@@ -4,7 +4,7 @@ dump_lua = true
 priority = 5
 
 
-[[patches]]
+[[patches]] # https://github.com/thefaketh30ne/grab-bag/blob/main/lovely/jokers.toml#L8-L16
 [patches.pattern]
 target = "card.lua"
 match_indent = true

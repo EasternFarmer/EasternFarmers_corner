@@ -1,5 +1,4 @@
 SMODS.Joker{
-    name = "Pocket Plant",
     key = "pocketplant",
     config = { extra = { discards = 3, hands = 1 } },
     loc_txt = {
@@ -45,8 +44,7 @@ SMODS.Joker{
     3.0xmult
     decreases by 0.1xmult for each joker (including this) you have at the end of the round
     ]]
-    name = "Ghost pepper", -- Idea Credit: plantform @ discord
-    key = "ghostpepper",
+    key = "ghostpepper", -- Idea Credit: plantform @ discord
     config = { extra = { xmult = 3.0, lose_rate = 0.1} },
     loc_txt = {
         name = 'Ghost pepper',
@@ -99,8 +97,7 @@ SMODS.Joker{
         1.5x
         all face cards are debuffed
         ]]
-    name = "plantform", -- Idea Credit: plantform @ discord
-    key = "plantform",
+    key = "plantform", -- Idea Credit: plantform @ discord
     config = { extra = { xmult = 2 } },
     loc_txt = {
         name = 'Plantform',
@@ -154,8 +151,7 @@ SMODS.Joker{
         gains 0.5xmult every time this joker has been sold this game
         (currently 1.0xmult)
         ]]
-    name = "Dandelion", -- Idea Credit: plantform @ discord
-    key = "dandelion",
+    key = "dandelion", -- Idea Credit: plantform @ discord
     loc_txt = {
         name = 'Dandelion',
         text = {
@@ -204,8 +200,7 @@ SMODS.Joker{
         gains +2 chips per hand played
         (currently +0 chips)
     ]]
-    name = "Grass", -- Idea Credit: plantform @ discord
-    key = "grass",
+    key = "grass", -- Idea Credit: plantform @ discord
     loc_txt = {
         name = 'Grass',
         text = {
@@ -256,8 +251,7 @@ SMODS.Joker{
     Sunflower
     Gain $1 per hand played
     ]]
-    name = "Sunflower", -- Idea Credit: thenumberpie @ discord
-    key = "sunflower",
+    key = "sunflower", -- Idea Credit: thenumberpie @ discord
     loc_txt = {
         name = 'Sunflower',
         text = {
@@ -300,8 +294,7 @@ SMODS.Joker{
 }
 
 SMODS.Joker{
-    name = "Rootabaga", -- Idea Credit: wimpyzombie22 @ discord
-    key = "rootabaga",
+    key = "rootabaga", -- Idea Credit: wimpyzombie22 @ discord
     loc_txt = {
         name = 'Rootabaga',
         text = {
@@ -339,8 +332,7 @@ SMODS.Joker{
     1 in 6 chance of getting destroyed at the end of the round
     when destroyed, the shop will guarrantee a plant booster pack
     ]]
-    name = "Seed", -- Idea Credit: plantform @ discord
-    key = "seed",
+    key = "seed", -- Idea Credit: plantform @ discord
     loc_txt = {
         name = 'Seed',
         text = {
@@ -397,8 +389,7 @@ SMODS.Joker{
         Venus fly trap:
         food jokers last thrice as long
     ]]
-    name = "Venus fly trap", -- Idea Credit: relatal @ discord
-    key = "flytrap",
+    key = "flytrap", -- Idea Credit: relatal @ discord
     loc_txt = {
         name = 'Venus fly trap',
         text = {
@@ -458,8 +449,7 @@ SMODS.Joker{
     create a negative copy of this joker at the end of the round
     -1 hand size
     ]]
-    name = "Grapevine", -- Idea Credit: plantform @ discord
-    key = "grapevine",
+    key = "grapevine", -- Idea Credit: plantform @ discord
     loc_txt = {
         name = 'Grapevine',
         text = {
@@ -538,8 +528,7 @@ SMODS.Joker{
     Rework to my d100 idea. Rolls the d100, below 50 it subtracts that from mult,
     above 50 adds it to mult, but if you hit 50 exactly it does times 50 to mult instead
     ]]
-    name = "Gamblers dream", -- Idea Credit: wimpyzombie22 @ discord
-    key = "gamblersdream",
+    key = "gamblersdream", -- Idea Credit: wimpyzombie22 @ discord
     loc_txt = {
         name = 'Gamblers dream',
         text = {
@@ -607,8 +596,7 @@ SMODS.Joker{
     --[[
     give chips based on how many times youve played the hand for
     ]]
-    name = "Spreading Vines", -- Idea Credit: wizard_man98082 @ discord
-    key = "spreadingvines",
+    key = "spreadingvines", -- Idea Credit: wizard_man98082 @ discord
     loc_txt = {
         name = 'Spreading Vines',
         text = {
@@ -649,8 +637,7 @@ SMODS.Joker{
     --[[
     "Everytime Wheel of Fortune misses, it randomly upgrades one of the hands"
     ]]
-    name = "Wheel of Space", -- Idea Credit: alperen_pro @ discord
-    key = "spacewheel",
+    key = "spacewheel", -- Idea Credit: alperen_pro @ discord
     loc_txt = {
         name = 'Wheel of Space',
         text = {
@@ -692,8 +679,7 @@ SMODS.Joker{
     oh i got an idea if ur interested, joker that re-triggers plant jokers x times, 
     increased by 1 everytime u beat the plant or water boss blind and uh called good harvest? --._.fr
     ]]
-    name = "Good Harvest", -- Idea Credit: alperen_pro @ discord
-    key = "goodharvest",
+    key = "goodharvest", -- Idea Credit: alperen_pro @ discord
     loc_txt = {
         name = 'Good Harvest',
         text = {
@@ -726,7 +712,6 @@ SMODS.Joker{
 }
 
 SMODS.Joker {
-    name = "Fertilizer",
     key = "fertilizer",
     loc_txt = {
         name = 'Fertilizer',
@@ -757,7 +742,6 @@ SMODS.Joker {
 }
 
 SMODS.Joker {
-    name = "Photosynthesis",
     key = "photosynthesis",
     loc_txt = {
         name = 'Photosynthesis',
@@ -787,4 +771,48 @@ SMODS.Joker {
             end 
         end
     end,
+}
+
+SMODS.Joker {
+    key = "9-5",
+    loc_txt = {
+        name = '9-5',
+        text = {
+            'If your computer time is',
+            'between {C:gold}#1#{} and {C:gold}#2#{} {X:mult,C:white}X#3#{} Mult',
+            'and {C:money}#4#${} at the end of the round'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return {
+            vars = {
+            EF.normal_hour_to_am_pm(card.ability.immutable.min_hour),
+            EF.normal_hour_to_am_pm(card.ability.immutable.max_hour),
+            card.ability.extra.xmult,
+            card.ability.extra.dollars,
+        }
+    }
+    end,
+    config = { extra = {xmult = 0.5, dollars = 10}, immutable = { min_hour = 9, max_hour = 17} },
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    rarity = 2, -- dunno if change needed
+    cost = 4,
+    atlas = "missing_joker",
+    --pos = {x=9,y=0},
+    calculate = function(self, card, context)
+        if EF.hour_check(card) then
+            if context.joker_main then
+                return {
+                    xmult = card.ability.extra.xmult
+                }
+            end
+        end
+    end,
+    calc_dollar_bonus = function(self, card)
+        if EF.hour_check(card) then
+            return card.ability.extra.dollars
+        end
+    end
 }

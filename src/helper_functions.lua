@@ -45,7 +45,6 @@ function EF.get_most_played_hands()
   return hands
 end
 
----comment
 ---@param x number
 ---@return string
 function EF.normal_hour_to_am_pm(x) -- maybe add a config option to toggle between 12h and 24h
