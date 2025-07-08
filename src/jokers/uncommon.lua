@@ -80,6 +80,34 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.extra.chips, card.ability.extra.mult}}
     end,
+    joker_display_def = function (JokerDisplay)
+        return {
+            reminder_text = {
+                { text = "(" },
+                { ref_table = "card.joker_display_values", ref_value = "count",          colour = G.C.ORANGE },
+                { text = "x" },
+                { text = "Plant", colour = G.C.EF.PLANT },
+                { text = ")" },
+            },
+            calc_function = function(card)
+                local count = 0
+                if G.jokers then
+                    for _, joker_card in ipairs(G.jokers.cards) do
+                        if joker_card.config.center.rarity and joker_card.config.center.rarity == "EF_plant" then
+                            count = count + 1
+                        end
+                    end
+                end
+                card.joker_display_values.count = count
+            end,
+            mod_function = function(card, mod_joker)
+                return {
+                    mult = (card.config.center.rarity == "EF_plant" and mod_joker.ability.extra.mult * JokerDisplay.calculate_joker_triggers(mod_joker) or nil),
+                    chips = (card.config.center.rarity == "EF_plant" and mod_joker.ability.extra.chips * JokerDisplay.calculate_joker_triggers(mod_joker) or nil),
+                }
+            end
+        }
+    end,
     unlocked = true,
     discovered = true,
     blueprint_compat = true,
@@ -110,6 +138,36 @@ SMODS.Joker {
     },
     loc_vars = function(self, info_queue, card)
         return {vars = {EF.normal_hour_to_am_pm(card.ability.immutable.min_hour), EF.normal_hour_to_am_pm(card.ability.immutable.max_hour), card.ability.extra.xmult}}
+    end,
+    joker_display_def = function (JokerDisplay)
+        return {
+            text = {
+                {ref_table = "card.joker_display_values", ref_value = "effective", colour = G.C.GOLD},
+                {text = " Plant", colour = G.C.EF.PLANT},
+                {text = " jokers"}
+            },
+            calc_function = function(card)
+                local count = 0
+                if G.jokers then
+                    for _, joker_card in ipairs(G.jokers.cards) do
+                        if joker_card.config.center.rarity and joker_card.config.center.rarity == "EF_plant" then
+                            count = count + 1
+                        end
+                    end
+                end
+
+                if count == 0 or EF.hour_check(card) then
+                    card.joker_display_values.effective = count
+                else
+                    card.joker_display_values.effective = "Effective 0"
+                end
+            end,
+            mod_function = function(card, mod_joker)
+                return {
+                    x_mult = (EF.hour_check(mod_joker) and card.config.center.rarity == "EF_plant" and mod_joker.ability.extra.xmult ^ JokerDisplay.calculate_joker_triggers(mod_joker) or nil),
+                }
+            end
+        }
     end,
     unlocked = true,
     discovered = true,
@@ -147,8 +205,34 @@ SMODS.Joker {
             EF.normal_hour_to_am_pm(card.ability.immutable.max_hour),
             card.ability.extra.xmult,
             card.ability.extra.dollars,
+            }
         }
-    }
+    end,
+    joker_display_def = function (JokerDisplay)
+        return {
+            text = {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" }
+                },
+                { text = "+$", colour = G.C.MONEY },
+                {ref_table = "card.joker_display_values", ref_value = "dollars", colour = G.C.MONEY},
+            },
+            reminder_text = {
+                { ref_table = "card.joker_display_values", ref_value = "localized_text" },
+            },
+            calc_function = function(card)
+                if EF.hour_check(card) then
+                    card.joker_display_values.xmult = card.ability.extra.xmult
+                    card.joker_display_values.dollars = card.ability.extra.dollars
+                    card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
+                else
+                    card.joker_display_values.xmult = 1
+                    card.joker_display_values.dollars = 0
+                    card.joker_display_values.localized_text = ""
+                end
+            end
+        }
     end,
     config = { extra = {xmult = 0.5, dollars = 10}, immutable = { min_hour = 9, max_hour = 17} },
     unlocked = true,

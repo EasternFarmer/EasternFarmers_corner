@@ -17,6 +17,23 @@ SMODS.Joker{
         info_queue[#info_queue + 1] = { key = 'tag_EF_small_plant_pack_tag', set = 'Tag' }
         return {vars = {G.GAME.probabilities.normal, card.ability.extra.odds}}
     end,
+    joker_display_def = function (JokerDisplay)
+        return {
+            text = {
+                { text = "(" },
+                { ref_table = "card.joker_display_values", ref_value = "nominator" },
+                { text = " in " },
+                { ref_table = "card.joker_display_values", ref_value = "denominator" },
+                { text = ")" },
+            },
+            text_config = { colour = G.C.GREEN, scale = 0.3 },
+            calc_function = function(card)
+                local nominator, denominator = SMODS.get_probability_vars(card, 1, 6)
+                card.joker_display_values.nominator = nominator
+                card.joker_display_values.denominator = denominator
+            end
+        }
+    end,
     config = { extra = {odds = 6} },
     atlas = "Jokers",
     pos = {x=5,y=0},

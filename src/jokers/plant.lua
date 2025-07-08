@@ -58,6 +58,21 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.extra.xmult, card.ability.extra.lose_rate}}
     end,
+    joker_display_def = function (JokerDisplay)
+        return {
+            text = {
+                {
+                    border_nodes = {
+                        { text = "X" },
+                        { ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" }
+                    }
+                }
+            },
+            calc_function = function(card)
+                card.joker_display_values.xmult = card.ability.extra.xmult
+            end
+        }
+    end,
     unlocked = true,
     discovered = true,
     blueprint_compat = true,
@@ -108,6 +123,21 @@ SMODS.Joker{
     },
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.extra.xmult}}
+    end,
+    joker_display_def = function (JokerDisplay)
+        return {
+            text = {
+                {
+                    border_nodes = {
+                        { text = "X" },
+                        { ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" }
+                    }
+                }
+            },
+            calc_function = function(card)
+                card.joker_display_values.xmult = card.ability.extra.xmult
+            end
+        }
     end,
     unlocked = true,
     atlas = "Jokers",
@@ -163,6 +193,21 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         return {vars = {G.GAME.EF_dandelion_xmult or 1.0}}
     end,
+    joker_display_def = function (JokerDisplay)
+        return {
+            text = {
+                {
+                    border_nodes = {
+                        { text = "X" },
+                        { ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" }
+                    }
+                }
+            },
+            calc_function = function(card)
+                card.joker_display_values.xmult =  G.GAME.EF_dandelion_xmult
+                end
+        }
+    end,
     unlocked = true,
     discovered = true,
     blueprint_compat = true,
@@ -210,6 +255,18 @@ SMODS.Joker{
     },
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.extra.current_chips}}
+    end,
+    joker_display_def = function (JokerDisplay)
+        return {
+            text = {
+                { text = "+" },
+                { ref_table = "card.joker_display_values", ref_value = "current_chips", retrigger_type = "mult" }
+            },
+            text_config = { colour = G.C.CHIPS },
+            calc_function = function(card)
+                card.joker_display_values.current_chips = card.ability.extra.current_chips
+            end
+        }
     end,
     config = { extra = { current_chips = 2 } },
     atlas = "Jokers",
@@ -261,6 +318,21 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.extra.dollars}}
     end,
+    joker_display_def = function (JokerDisplay)
+        return {
+            text = {
+                { text = "+$" },
+                { ref_table = "card.joker_display_values", ref_value = "dollars", retrigger_type = "mult" },
+            },
+            text_config = { colour = G.C.GOLD },
+            reminder_text = {
+                { text = "(Hands)" },
+            },
+            calc_function = function(card)
+                card.joker_display_values.dollars = card.ability.extra.dollars
+            end
+        }
+    end,
     config = { extra = { dollars = 2 } },
     atlas = "Jokers",
     pos = { x = 1, y = 0},
@@ -304,6 +376,20 @@ SMODS.Joker{
             'to your {C:mult}Mult{}'
         }
     },
+    joker_display_def = function (JokerDisplay)
+        return {
+            text = {
+                { text = "+" },
+                { ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult" }
+            },
+            text_config = { colour = G.C.MULT },
+            calc_function = function(card)
+                local chips = hand_chips or 0
+                local mult = math.sqrt(lenient_bignum(chips))
+                card.joker_display_values.mult = mult
+            end
+        }
+    end,
     unlocked = true,
     discovered = true,
     atlas = "Jokers",
@@ -407,6 +493,18 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         return { vars = {card.ability.extra.mult, card.ability.extra.plus_mult, card.ability.immutable.hand_size} }
     end,
+    joker_display_def = function (JokerDisplay)
+        return {
+            text = {
+                { text = "+" },
+                { ref_table = "card.joker_display_values", ref_value = "mult", retrigger_type = "mult" }
+            },
+            text_config = { colour = G.C.MULT },
+            calc_function = function(card)
+                card.joker_display_values.mult = card.ability.extra.mult
+            end
+        }
+    end,
     config = { extra = {mult = 4, plus_mult = 2}, immutable = {hand_size = -1} },
     unlocked = true,
     discovered = true,
@@ -486,6 +584,24 @@ SMODS.Joker{
     },
     loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.chips, card.ability.extra.chips*10 } }
+    end,
+    joker_display_def = function (JokerDisplay)
+        return {
+            text = {
+                { text = "+" },
+                { ref_table = "card.joker_display_values", ref_value = "chips", retrigger_type = "mult" }
+            },
+            text_config = { colour = G.C.CHIPS },
+            calc_function = function(card)
+                local text, _, _ = JokerDisplay.evaluate_hand()
+                local eval_ = (text ~= 'Unknown' and G.GAME and G.GAME.hands[text] and G.GAME.hands[text].played + (next(G.play.cards) and 0 or 1)) or 0
+                if type(eval_) == "boolean" then
+                    card.joker_display_values.chips = eval_
+                else
+                    card.joker_display_values.chips = eval_*card.ability.extra.chips
+                end
+            end
+        }
     end,
     config = { extra = { chips = 5 } },
     unlocked = true,

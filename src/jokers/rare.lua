@@ -54,6 +54,15 @@ SMODS.Joker{
     loc_vars = function(self, info_queue, card)
         return {vars = {card.ability.extra.retriggers}}
     end,
+    joker_display_def =function (JokerDisplay)
+        return {
+            retrigger_joker_function = function (card, retrigger_joker)
+                if card ~= retrigger_joker and card.config.center.rarity == "EF_plant" then
+                    return retrigger_joker.ability.extra.retriggers
+                end
+            end
+        }
+    end,
     config = { extra = {retriggers = 1} },
     atlas = "Jokers",
     pos = {x = 8, y = 0},
@@ -92,6 +101,26 @@ SMODS.Joker {
             card.ability.extra.bad_xmult,
         }
     }
+    end,
+    ---@param JokerDisplay JokerDisplay
+    joker_display_def = function(JokerDisplay)
+        ---@type JDJokerDefinition
+        return {
+            text = {
+                border_nodes = {
+                    { text = "X" },
+                    { ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" }
+                }
+            },
+            calc_function = function(card)
+                local num = EF.get_time_table().min
+                if num % 2 == 1 then -- odd
+                    card.joker_display_values.x_mult = card.ability.extra.bad_xmult
+                else -- even
+                    card.joker_display_values.x_mult = card.ability.extra.good_xmult
+                end
+            end
+        }
     end,
     config = { extra = {good_xmult = 8, bad_xmult = 2} },
     unlocked = true,
