@@ -107,9 +107,11 @@ SMODS.Joker {
         ---@type JDJokerDefinition
         return {
             text = {
-                border_nodes = {
-                    { text = "X" },
-                    { ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" }
+                {
+                    border_nodes = {
+                        { text = "X" },
+                        { ref_table = "card.joker_display_values", ref_value = "x_mult", retrigger_type = "exp" }
+                    }
                 }
             },
             calc_function = function(card)
@@ -127,7 +129,7 @@ SMODS.Joker {
     discovered = true,
     blueprint_compat = true,
     rarity = 3, -- dunno if change needed
-    cost = 4,
+    cost = 8,
     atlas = "missing_joker",
     --pos = {x=9,y=0},
     calculate = function(self, card, context)
@@ -142,6 +144,92 @@ SMODS.Joker {
                     xmult = card.ability.extra.good_xmult
                 }
             end
+        end
+    end,
+}
+
+SMODS.Joker {
+    key = "rootofevil",
+    loc_txt = {
+        name = 'The Root of all evil',
+        text = {
+            'All played {C:gold}number{} cards',
+            'become {C:gold}Root{} cards',
+            'when scored.',
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = G.P_CENTERS.m_EF_root
+        return { vars = {  } }
+    end,
+    config = { extra = {  } },
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    rarity = 3,
+    cost = 10,
+    atlas = "missing_joker",
+    --pos = {x=9,y=0},
+    calculate = function(self, card, context)
+        if context.before and context.main_eval and not context.blueprint then
+            local number = 0
+            for _, scored_card in ipairs(context.scoring_hand) do
+                if not scored_card:is_face() and scored_card:get_id() ~= 14 then
+                    number = number + 1
+                    scored_card:set_ability('m_EF_root', nil, true)
+                    G.E_MANAGER:add_event(Event({
+                        func = function()
+                            scored_card:juice_up()
+                            return true
+                        end
+                    }))
+                end
+            end
+            
+            if number > 0 then
+                return {
+                    message = "Rooted",
+                    colour = G.C.MONEY
+                }
+            end
+        end
+    end,
+}
+
+SMODS.Joker {
+    key = "enhancedsoil",
+    loc_txt = {
+        name = 'Enhanced Soil',
+        text = {
+            'Retriggers all {C:gold}Root{} cards {C:gold}#1#{} time'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        info_queue[#info_queue+1] = G.P_CENTERS.m_EF_root
+        return { vars = { card.ability.extra.retrigger } }
+    end,
+    joker_display_def = function (JokerDisplay)
+        return {
+            retrigger_function = function(playing_card, scoring_hand, held_in_hand, joker_card)
+                if held_in_hand then return 0 end
+                return playing_card and SMODS.has_enhancement(playing_card, 'm_EF_root') and
+                joker_card.ability.extra.retrigger * JokerDisplay.calculate_joker_triggers(joker_card) or 0
+            end
+        }
+    end,
+    config = { extra = { retrigger = 1 } },
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    rarity = 3,
+    cost = 10,
+    atlas = "missing_joker",
+    --pos = {x=9,y=0},
+    calculate = function(self, card, context)
+        if context.repetition and context.cardarea == G.play and SMODS.has_enhancement(context.other_card, 'm_EF_root') then
+            return {
+                repetitions = card.ability.extra.retrigger
+            }
         end
     end,
 }

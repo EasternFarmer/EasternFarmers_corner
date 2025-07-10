@@ -12,7 +12,7 @@ SMODS.Enhancement {
     loc_txt = {
         name = "Root Card",
         text = {
-            "{X:mult,C:white}+X#1#{} Mult for every",
+            "{X:mult,C:white}X#1#{} Mult for each",
             "{C:ef_plant}Plant{} Joker you own",
             '{s:0.8,C:inactive}(Currently {X:mult,C:white}X#2#{s:0.8,C:inactive})'
         }

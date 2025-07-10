@@ -49,7 +49,7 @@ SMODS.Consumable {
 SMODS.Consumable {
     key = 'wheel_of_doom',
     set = 'plant_spectral',
-    config = { extra = {extra = {created = 5}} },
+    config = { extra = {created = 4} },
     loc_txt = {
         name = 'Wheel of Doom',
         text = {

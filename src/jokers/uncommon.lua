@@ -25,7 +25,7 @@ SMODS.Joker{
     eternal_compat = true,
     demicoloncompat = true,
     rarity = 2,
-    cost = 4,
+    cost = 6,
     update = function(self, card, dt)
         if card.ability.extra.delay == 60 / card.ability.extra.FPS then
             card.ability.extra.x_pos = (card.ability.extra.x_pos + 1) % 40
@@ -112,7 +112,7 @@ SMODS.Joker {
     discovered = true,
     blueprint_compat = true,
     rarity = 2,
-    cost = 4,
+    cost = 6,
     atlas = "Jokers",
     pos = {x=9,y=0},
     config = { extra = { chips = 20, mult = 20 } },
@@ -173,7 +173,7 @@ SMODS.Joker {
     discovered = true,
     blueprint_compat = true,
     rarity = 2,
-    cost = 4,
+    cost = 6,
     atlas = "missing_joker",
     --pos = {x=9,y=0},
     config = { extra = {xmult = 2}, immutable = { min_hour = 8, max_hour = 20} },
@@ -211,9 +211,11 @@ SMODS.Joker {
     joker_display_def = function (JokerDisplay)
         return {
             text = {
-                border_nodes = {
-                    { text = "X" },
-                    { ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" }
+                {
+                    border_nodes = {
+                        { text = "X" },
+                        { ref_table = "card.joker_display_values", ref_value = "xmult", retrigger_type = "exp" }
+                    }
                 },
                 { text = "+$", colour = G.C.MONEY },
                 {ref_table = "card.joker_display_values", ref_value = "dollars", colour = G.C.MONEY},
@@ -239,9 +241,9 @@ SMODS.Joker {
     discovered = true,
     blueprint_compat = false,
     rarity = 2, -- dunno if change needed
-    cost = 4,
-    atlas = "missing_joker",
-    --pos = {x=9,y=0},
+    cost = 6,
+    atlas = "Jokers",
+    pos = {x=0,y=1},
     calculate = function(self, card, context)
         if EF.hour_check(card) then
             if context.joker_main then

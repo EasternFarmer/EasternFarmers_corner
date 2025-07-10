@@ -80,8 +80,8 @@ SMODS.Joker{
     demicoloncompat = true,
     cost = 6,
     rarity = "EF_plant",
-    atlas = "missing_joker",
-
+    atlas = "Jokers",
+    pos = {x=1,y=1},
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
  	end,
@@ -441,8 +441,8 @@ SMODS.Joker{
     eternal_compat = false,
     demicoloncompat = true,
     rarity = 'EF_plant',
-    atlas = "missing_joker",
-
+    atlas = "Jokers",
+    pos = {x=4,y=1},
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: relatal', G.C.RARITY.Common, G.C.BLACK, 0.8 )
  	end,
@@ -513,7 +513,8 @@ SMODS.Joker{
     demicoloncompat = true,
     rarity = "EF_plant",
     cost = 0,
-    atlas = "missing_joker",
+    atlas = "Jokers",
+    pos={x=2,y=1},
     set_badges = function(self, card, badges)
          badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
      end,
@@ -610,8 +611,8 @@ SMODS.Joker{
     eternal_compat = true,
     demicoloncompat = true,
     rarity = "EF_plant",
-    atlas = "missing_joker",
-
+    atlas = "Jokers",
+    pos = {x=3,y=1},
     set_badges = function(self, card, badges)
  		badges[#badges+1] = create_badge('Idea Credit: wizard_man98082', G.C.RARITY.Common, G.C.BLACK, 0.8 )
  	end,
