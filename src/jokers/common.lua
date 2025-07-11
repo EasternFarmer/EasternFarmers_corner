@@ -28,7 +28,7 @@ SMODS.Joker{
             },
             text_config = { colour = G.C.GREEN, scale = 0.3 },
             calc_function = function(card)
-                local nominator, denominator = SMODS.get_probability_vars(card, 1, 6)
+                local nominator, denominator = G.GAME.probabilities.normal, card.ability.extra.odds--SMODS.get_probability_vars(card, 1, 6)
                 card.joker_display_values.nominator = nominator
                 card.joker_display_values.denominator = denominator
             end
@@ -51,7 +51,8 @@ SMODS.Joker{
 
     calculate = function(self, card, context)
         if context.forcetrigger or (context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint) then
-            if SMODS.pseudorandom_probability(card, "EF_seed", 1, 6) or
+            if pseudorandom("EF_seed") < G.GAME.probabilities.normal / card.ability.extra.odds or 
+            --SMODS.pseudorandom_probability(card, "EF_seed", 1, card.ability.extra.odds) or
                 context.forcetrigger or card.ability.cry_rigged -- cryptid compat
             then
                 card:start_dissolve()
