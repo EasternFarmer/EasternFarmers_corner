@@ -8,7 +8,7 @@ SMODS.Joker{
         text = {
             'Everytime {C:tarot}Wheel of Fortune{}',
             'misses, it upgrades the most',
-            'played  {C:gold}Poker Hands{}',
+            'played {C:gold}Poker Hand{}',
         }
     },
     loc_vars = function(self, info_queue, card)
@@ -30,11 +30,13 @@ SMODS.Joker{
  		badges[#badges+1] = create_badge('Idea Credit: alperen_pro', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
  	end,
     calculate = function(self, card, context)
-        if (context.wheel_of_fortune_fail or context.forcetrigger) and not context.blueprint then -- wheel.toml
-                local hand_chosen = EF.get_most_played_hands()[1].key
-                SMODS.calculate_effect({message = "Level up!"}, card)
-                SMODS.smart_level_up_hand(nil, hand_chosen, false)
-                return
+        if context.blueprint then
+            return
+        end
+        if context.forcetrigger or context.pseudorandom_result and not context.result and context.identifier == "wheel_of_fortune" then
+            local hand_chosen = EF.get_most_played_hands()[1].key
+            SMODS.calculate_effect({message = "Level up!"}, card)
+            SMODS.smart_level_up_hand(nil, hand_chosen, false)
         end
     end
 }
