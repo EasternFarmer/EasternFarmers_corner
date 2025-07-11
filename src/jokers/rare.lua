@@ -27,7 +27,7 @@ SMODS.Joker{
     cost = 8,
 
     set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea Credit: alperen_pro', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 		badges[#badges+1] = create_badge('Idea Credit: alperen_pro', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
  	end,
     calculate = function(self, card, context)
         if (context.wheel_of_fortune_fail or context.forcetrigger) and not context.blueprint then -- wheel.toml
@@ -74,7 +74,7 @@ SMODS.Joker{
     cost = 8,
 
     set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea Credit: ._.fr', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 		badges[#badges+1] = create_badge('Idea Credit: ._.fr', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
  	end,
     calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker and not context.blueprint then
@@ -130,8 +130,8 @@ SMODS.Joker {
     blueprint_compat = true,
     rarity = 3, -- dunno if change needed
     cost = 8,
-    atlas = "missing_joker",
-    --pos = {x=9,y=0},
+    atlas = "Jokers",
+    pos = {x=7,y=1},
     calculate = function(self, card, context)
         if context.joker_main then
             local num = EF.get_time_table().min
@@ -230,6 +230,53 @@ SMODS.Joker {
             return {
                 repetitions = card.ability.extra.retrigger
             }
+        end
+    end,
+}
+
+SMODS.Joker {
+    key = "e",
+    loc_txt = {
+        name = 'E',
+        text = {
+            'Cards that have the letter E in',
+            'their name are retriggered',
+            '{s:0.8,C:inactive}(eg. Queen, Ten, Joker){}'
+
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.retrigger } }
+    end,
+    config = { extra = { retrigger = 1 } },
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    rarity = 3,
+    cost = 10,
+    atlas = "Jokers",
+    pos = {x=8,y=1},
+    set_badges = function(self, card, badges)
+ 		badges[#badges+1] = create_badge('Idea Credit: alperen_pro', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
+ 	end,
+    calculate = function(self, card, context)
+        if context.blueprint then
+            return
+        end
+        if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= card then
+            local name = string.gsub(context.other_card.config.center.name, "j_.+_", "", 1)
+            if name ~= "e" then
+                if string.match(name, "E") or string.match(name, "e") then
+                    return {repetitions = card.ability.extra.retrigger}
+                end
+            end
+        end
+        if context.repetition and context.cardarea == G.play then
+            local check = { [2]=false, [3] = true, [4] = false, [5] = true, [6] = false,
+                [7] = true, [8] = true, [9] = true, [10] = true, [11] = false, [12] = true, [13] = false, [14] = true}
+            if check[context.other_card.base.id] then
+                return {repetitions = card.ability.extra.retrigger}
+            end
         end
     end,
 }

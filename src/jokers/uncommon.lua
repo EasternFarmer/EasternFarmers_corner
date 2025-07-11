@@ -41,7 +41,7 @@ SMODS.Joker{
     end,
 
     set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea Credit: wimpyzombie22', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 		badges[#badges+1] = create_badge('Idea Credit: wimpyzombie22', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
  	end,
 
     calculate = function(self, card, context)
@@ -174,8 +174,8 @@ SMODS.Joker {
     blueprint_compat = true,
     rarity = 2,
     cost = 6,
-    atlas = "missing_joker",
-    --pos = {x=9,y=0},
+    atlas = "Jokers",
+    pos = {x=6,y=1},
     config = { extra = {xmult = 2}, immutable = { min_hour = 8, max_hour = 20} },
     calculate = function(self, card, context)
         if context.other_joker and context.other_joker.config.center.rarity == "EF_plant" then
@@ -257,5 +257,47 @@ SMODS.Joker {
         if EF.hour_check(card) then
             return card.ability.extra.dollars
         end
+    end
+}
+
+SMODS.Joker {
+    key = "gardengnome",
+    loc_txt = {
+        name = 'Garden Gnome',
+        text = {
+            'Add {C:money}$#1#{} of {C:attention}sell value{}',
+            'to every {C:ef_plant}Plant{} jokers',
+            'at end of the round'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card.ability.extra.sell_value} }
+    end,
+    config = { extra = {sell_value = 2} },
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    rarity = 2,
+    cost = 6,
+    atlas = "Jokers",
+    pos = {x=5,y=1},
+    calculate = function(self, card, context)
+        if context.end_of_round and context.game_over == false and context.main_eval and not context.blueprint then
+            for _, other_card in ipairs(G.jokers.cards) do
+                if other_card.set_cost and other_card.config.center.rarity == "EF_plant" then
+                    other_card.ability.extra_value = (other_card.ability.extra_value or 0) +
+                        card.ability.extra.sell_value
+                    other_card:set_cost()
+                end
+            end
+            return {
+                message = localize('k_val_up'),
+                colour = G.C.MONEY
+            }
+        end
+    end,
+    set_badges = function (self, card, badges)
+        badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
+        badges[#badges+1] = create_badge('Art Credit: diamondsapphire', G.C.EF.ART_CREDIT, G.C.BLACK, 0.8 )
     end
 }

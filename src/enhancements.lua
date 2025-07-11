@@ -18,11 +18,11 @@ SMODS.Enhancement {
         }
     },
     discovered = true,
-    atlas = "missing_joker",
-    -- pos = { x = 0, y = 0 },
-    config = { xmult = 1 },
+    atlas = "Enhancements",
+    pos = { x = 0, y = 0 },
+    config = { extra = { xmult = 1 } },
     loc_vars = function(self, info_queue, card)
-        local x = card.ability.xmult
+        local x = card.ability.extra.xmult
         return { vars = { x, root_calc(x) } }
     end,
     calculate = function (self, card, context)

@@ -1,6 +1,7 @@
 SMODS.Voucher {
     key = 'stopwatch',
-    atlas = "missing_joker",
+    atlas = "Vouchers",
+    pos = {x = 0, y = 0},
     config = { extra = {} },
     discovered = true,
     loc_txt = {

@@ -23,7 +23,7 @@ SMODS.Consumable {
     atlas = "Spectrals",
     pos = { x = 0, y = 0 },
     set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea Credit: thenumberpie', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 		badges[#badges+1] = create_badge('Idea Credit: thenumberpie', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
  	end,
     discovered = true,
     loc_vars = function(self, info_queue, card)
@@ -109,7 +109,7 @@ SMODS.Consumable {
     atlas = "Spectrals",
     pos = {x=3, y=0},
     set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
  	end,
     discovered = true,
     loc_vars = function(self, info_queue, card)
@@ -144,7 +144,7 @@ SMODS.Consumable {
         }
     },
     set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
  	end,
     atlas = "Spectrals",
     pos = {x = 2, y = 0},

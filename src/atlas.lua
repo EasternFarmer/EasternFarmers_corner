@@ -45,3 +45,19 @@ SMODS.Atlas({ -- Gamblers dream animation
     py = 95,
     atlas_table = "ASSET_ATLAS"
 }):register()
+
+SMODS.Atlas({
+    key = "Enhancements", 
+    path = "Enhancements.png", 
+    px = 71,
+    py = 95,
+    atlas_table = "ASSET_ATLAS"
+}):register()
+
+SMODS.Atlas({
+    key = "Vouchers", 
+    path = "Vouchers.png", 
+    px = 71,
+    py = 95,
+    atlas_table = "ASSET_ATLAS"
+}):register()

@@ -83,7 +83,7 @@ SMODS.Joker{
     atlas = "Jokers",
     pos = {x=1,y=1},
     set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
  	end,
 
     calculate = function(self, card, context)
@@ -171,7 +171,7 @@ SMODS.Joker{
         end
 	end,
     set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea & Art Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 		badges[#badges+1] = create_badge('Idea & Art Credit: plantform', G.C.EF.IDEA_ART_CREDIT, G.C.BLACK, 0.8 )
  	end,
 }
 
@@ -218,7 +218,7 @@ SMODS.Joker{
     pos = {x = 7, y = 0},
 
     set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
  	end,
 
     add_to_deck = function (self, card, from_debuff)
@@ -279,7 +279,7 @@ SMODS.Joker{
     rarity = "EF_plant",
 
     set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea & Art Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 		badges[#badges+1] = create_badge('Idea & Art Credit: plantform', G.C.EF.IDEA_ART_CREDIT, G.C.BLACK, 0.8 )
  	end,
 
     calculate = function(self, card, context)
@@ -344,7 +344,7 @@ SMODS.Joker{
     rarity = "EF_plant",
 
     set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea Credit: thenumberpie', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 		badges[#badges+1] = create_badge('Idea Credit: thenumberpie', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
  	end,
 
     calculate = function(self, card, context)
@@ -400,7 +400,7 @@ SMODS.Joker{
     rarity = "EF_plant",
 
     set_badges = function(self, card, badges)
-        badges[#badges+1] = create_badge('Idea Credit: wimpyzombie22', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+        badges[#badges+1] = create_badge('Idea Credit: wimpyzombie22', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
     end,
     calculate = function(self, card, context)
         if context.joker_main or context.forcetrigger then
@@ -444,7 +444,7 @@ SMODS.Joker{
     atlas = "Jokers",
     pos = {x=4,y=1},
     set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea Credit: relatal', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 		badges[#badges+1] = create_badge('Idea Credit: relatal', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
  	end,
 
     calculate = function(self, card, context)
@@ -516,7 +516,7 @@ SMODS.Joker{
     atlas = "Jokers",
     pos={x=2,y=1},
     set_badges = function(self, card, badges)
-         badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+         badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
      end,
 
     add_to_deck = function(self, card, from_debuff)
@@ -614,7 +614,7 @@ SMODS.Joker{
     atlas = "Jokers",
     pos = {x=3,y=1},
     set_badges = function(self, card, badges)
- 		badges[#badges+1] = create_badge('Idea Credit: wizard_man98082', G.C.RARITY.Common, G.C.BLACK, 0.8 )
+ 		badges[#badges+1] = create_badge('Idea Credit: wizard_man98082', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
  	end,
 
     calculate = function(self, card, context)
