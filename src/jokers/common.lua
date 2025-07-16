@@ -73,3 +73,80 @@ SMODS.Joker{
         end
     end
 }
+
+SMODS.Joker {
+    key = "xin4",
+    loc_txt = {
+        name = 'x in 4',
+        text = {
+            'Each time a {C:gold}x{} {C:green}in 4{}',
+            'fails gain {C:money}4${} times {C:gold}x{}',
+            '{s:0.8,C:inactive}(if {s:0.8,C:green}2 in 4{s:0.8,C:inactive} fails gain {s:0.8,C:money}8${s:0.8,C:inactive}){}'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {} }
+    end,
+    config = { extra = {} },
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    rarity = 1,
+    cost = 6,
+    atlas = "missing_joker",
+    -- pos = {x=5,y=1},
+    calculate = function(self, card, context)
+        if context.pseudorandom_result and not context.result then
+            if context.denominator == 4 then
+                local dollars = context.numerator * 4
+                G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + dollars
+                return {
+                    dollars = dollars,
+                    func = function() -- This is for timing purposes, it runs after the dollar manipulation
+                        G.E_MANAGER:add_event(Event({
+                            func = function()
+                                G.GAME.dollar_buffer = 0
+                                return true
+                            end
+                        }))
+                    end
+                }
+            end
+        end
+    end,
+}
+
+SMODS.Joker {
+    key = "highfive",
+    loc_txt = {
+        name = 'High Five',
+        text = {
+            '{C:chips}+#1#{} Chips',
+            'if hand is a {C:gold}high card{}',
+            'and contains {C:gold}5 cards'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card.ability.extra.chips} }
+    end,
+    config = { extra = {chips = 75} },
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    rarity = 1,
+    cost = 6,
+    atlas = "missing_joker",
+    -- pos = {x=5,y=1},
+    set_badges = function(self, card, badges)
+ 		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
+ 	end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            if context.scoring_name == "High Card" and #context.full_hand == 5 then
+                return {
+                    chips = card.ability.extra.chips
+                }
+           end
+        end
+    end,
+}

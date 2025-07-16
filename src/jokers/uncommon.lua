@@ -137,7 +137,7 @@ SMODS.Joker {
         }
     },
     loc_vars = function(self, info_queue, card)
-        return {vars = {EF.normal_hour_to_am_pm(card.ability.immutable.min_hour), EF.normal_hour_to_am_pm(card.ability.immutable.max_hour), card.ability.extra.xmult}}
+        return {vars = {EF.FUNCS.normal_hour_to_am_pm(card.ability.immutable.min_hour), EF.FUNCS.normal_hour_to_am_pm(card.ability.immutable.max_hour), card.ability.extra.xmult}}
     end,
     joker_display_def = function (JokerDisplay)
         return {
@@ -156,7 +156,7 @@ SMODS.Joker {
                     end
                 end
 
-                if count == 0 or EF.hour_check(card) then
+                if count == 0 or EF.FUNCS.hour_check(card) then
                     card.joker_display_values.effective = count
                 else
                     card.joker_display_values.effective = "Effective 0"
@@ -164,7 +164,7 @@ SMODS.Joker {
             end,
             mod_function = function(card, mod_joker)
                 return {
-                    x_mult = (EF.hour_check(mod_joker) and card.config.center.rarity == "EF_plant" and mod_joker.ability.extra.xmult ^ JokerDisplay.calculate_joker_triggers(mod_joker) or nil),
+                    x_mult = (EF.FUNCS.hour_check(mod_joker) and card.config.center.rarity == "EF_plant" and mod_joker.ability.extra.xmult ^ JokerDisplay.calculate_joker_triggers(mod_joker) or nil),
                 }
             end
         }
@@ -179,7 +179,7 @@ SMODS.Joker {
     config = { extra = {xmult = 2}, immutable = { min_hour = 8, max_hour = 20} },
     calculate = function(self, card, context)
         if context.other_joker and context.other_joker.config.center.rarity == "EF_plant" then
-            if EF.hour_check(card) then
+            if EF.FUNCS.hour_check(card) then
                 return {
                     xmult = card.ability.extra.xmult
                 }
@@ -201,8 +201,8 @@ SMODS.Joker {
     loc_vars = function(self, info_queue, card)
         return {
             vars = {
-            EF.normal_hour_to_am_pm(card.ability.immutable.min_hour),
-            EF.normal_hour_to_am_pm(card.ability.immutable.max_hour),
+            EF.FUNCS.normal_hour_to_am_pm(card.ability.immutable.min_hour),
+            EF.FUNCS.normal_hour_to_am_pm(card.ability.immutable.max_hour),
             card.ability.extra.xmult,
             card.ability.extra.dollars,
             }
@@ -224,7 +224,7 @@ SMODS.Joker {
                 { ref_table = "card.joker_display_values", ref_value = "localized_text" },
             },
             calc_function = function(card)
-                if EF.hour_check(card) then
+                if EF.FUNCS.hour_check(card) then
                     card.joker_display_values.xmult = card.ability.extra.xmult
                     card.joker_display_values.dollars = card.ability.extra.dollars
                     card.joker_display_values.localized_text = "(" .. localize("k_round") .. ")"
@@ -245,7 +245,7 @@ SMODS.Joker {
     atlas = "Jokers",
     pos = {x=0,y=1},
     calculate = function(self, card, context)
-        if EF.hour_check(card) then
+        if EF.FUNCS.hour_check(card) then
             if context.joker_main then
                 return {
                     xmult = card.ability.extra.xmult
@@ -254,7 +254,7 @@ SMODS.Joker {
         end
     end,
     calc_dollar_bonus = function(self, card)
-        if EF.hour_check(card) then
+        if EF.FUNCS.hour_check(card) then
             return card.ability.extra.dollars
         end
     end
@@ -299,5 +299,208 @@ SMODS.Joker {
     set_badges = function (self, card, badges)
         badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
         badges[#badges+1] = create_badge('Art Credit: diamondsapphire', G.C.EF.ART_CREDIT, G.C.BLACK, 0.8 )
+    end
+}
+
+SMODS.Joker {
+    key = "houserules",
+    loc_txt = {
+        name = 'House Rules',
+        text = {
+            '{X:mult,C:white}X#1#{} Mult',
+            '{C:gold}first hand{} drawn face down'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card.ability.extra.xmult} }
+    end,
+    config = { extra = {xmult = 3} },
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    rarity = 2,
+    cost = 6,
+    atlas = "missing_joker",
+    -- pos = {x=5,y=1},
+    calculate = function(self, card, context)
+        if context.stay_flipped and context.to_area == G.hand and
+            G.GAME.current_round.hands_played == 0 and G.GAME.current_round.discards_used == 0 then
+            return {
+                stay_flipped = true
+            }
+        end
+        if context.joker_main then
+            return {
+                xmult = card.ability.extra.xmult
+            }
+        end
+    end,
+    set_badges = function (self, card, badges)
+        badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
+    end
+}
+
+SMODS.Joker {
+    key = "yin",
+    loc_txt = {
+        name = 'Yin (wip)',
+        text = {
+            '<effect not decided>',
+            'Triggers either when',
+            '{C:green}#1# in #2#{} succeeds',
+            'or {C:gold}Yang{} fails'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "EF_yin")
+        return { vars = {numerator, denominator} }
+    end,
+    config = { extra = {odds = 2}, state = {activated = false} },
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    rarity = 2,
+    cost = 6,
+    atlas = "missing_joker",
+    -- pos = {x=5,y=1},
+    calculate = function(self, card, context)
+        local function yin()
+            print("yin")
+            SMODS.calculate_effect({message = "hello"}, card)
+        end
+        if context.pseudorandom_result and context.result and context.identifier == "EF_yang" then
+            card.ability.state.activated = true
+        end
+        if context.joker_main and not context.blueprint and card.ability.state.activated == false then
+            if SMODS.pseudorandom_probability(card, "EF_yin", 1, card.ability.extra.odds, "EF_yin") then
+                yin()
+                card.ability.state.activated = true
+            end
+            return
+        end
+        if context.pseudorandom_result and not context.result and card.ability.state.activated == false then
+            print(context.identifier)
+            print("yinyin")
+            if context.identifier == "EF_yang" then
+                yin()
+                card.ability.state.activated = true
+            end
+        end
+        if context.post_joker then
+            card.ability.state.activated = false
+        end
+    end
+}
+
+SMODS.Joker {
+    key = "yang",
+    loc_txt = {
+        name = 'Yang (wip)',
+        text = {
+            '<effect not decided>',
+            'Triggers either when',
+            '{C:green}#1# in #2#{} succeeds',
+            'or {C:gold}Yin{} fails'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "EF_yang")
+        return { vars = {numerator, denominator} }
+    end,
+    config = { extra = {odds = 2}, state = {activated = false} },
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    rarity = 2,
+    cost = 6,
+    atlas = "missing_joker",
+    -- pos = {x=5,y=1},
+    calculate = function(self, card, context)
+        local function yang()
+            print("yang")
+            SMODS.calculate_effect({message = "hello"}, card)
+        end
+        if context.pseudorandom_result and context.result and context.identifier == "EF_yin" then
+            card.ability.state.activated = true
+        end
+        if context.joker_main and not context.blueprint and card.ability.state.activated == false then
+            if SMODS.pseudorandom_probability(card, "EF_yang", 1, card.ability.extra.odds, "EF_yang") then
+                yang()
+                card.ability.state.activated = true
+            end
+            return
+        end
+        if context.pseudorandom_result and not context.result and card.ability.state.activated == false then
+            print(context.identifier)
+            print("yangyang")
+            if context.identifier == "EF_yin" then
+                yang()
+                card.ability.state.activated = true
+            end
+        end
+        if context.post_joker then
+            card.ability.state.activated = false
+        end
+    end
+}
+
+SMODS.Joker {
+    key = "safe",
+    loc_txt = {
+        name = 'Safe',
+        text = {
+            'Once you play the correct {C:gold}Poker Hand{}',
+            '{C:gold}#1#{} times in a row, the {E:1,C:gold}Safe{}',
+            'opens and gives you {C:money}$#2#{}'
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card.ability.extra.correct_count, card.ability.extra.dollars} }
+    end,
+    config = { extra = {correct_count = 3, dollars = 100}, zzz = {hand_chosen = nil, current_streak = 0, flag = false}},
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    rarity = 2,
+    cost = 6,
+    atlas = "missing_joker",
+    -- pos = {x=5,y=1},
+    add_to_deck = function (self, card, from_debuff)
+        local viable_hands = {}
+        for k, v in pairs(G.GAME.hands) do
+            if v.visible then
+                table.insert(viable_hands, k)
+            end
+        end
+        card.ability.zzz.hand_chosen = pseudorandom_element(viable_hands, "EF_safe")
+        print(card.ability.zzz.hand_chosen)
+    end,
+    calculate = function(self, card, context)
+        if context.joker_main then
+            if context.scoring_name == card.ability.zzz.hand_chosen then
+                card.ability.zzz.current_streak = card.ability.zzz.current_streak + 1
+            else
+                card.ability.zzz.current_streak = 0
+            end
+            if card.ability.zzz.current_streak == 3 then
+                card.ability.zzz.flag = true
+            end
+            if card.ability.zzz.flag then
+                G.GAME.dollar_buffer = (G.GAME.dollar_buffer or 0) + card.ability.extra.dollars
+                return {
+                    dollars = card.ability.extra.dollars,
+                    func = function()
+                        G.E_MANAGER:add_event(Event({
+                            func = function()
+                                SMODS.calculate_effect({message = "Congrats!!!", colour = G.C.MONEY}, card)
+                                card:start_dissolve()
+                                G.GAME.dollar_buffer = 0
+                                return true
+                            end
+                        }))
+                    end
+                }
+            end
+        end
     end
 }

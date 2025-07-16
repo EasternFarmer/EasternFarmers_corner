@@ -34,7 +34,7 @@ SMODS.Joker{
             return
         end
         if context.forcetrigger or context.pseudorandom_result and not context.result and context.identifier == "wheel_of_fortune" then
-            local hand_chosen = EF.get_most_played_hands()[1].key
+            local hand_chosen = EF.FUNCS.get_most_played_hands()[1].key
             SMODS.calculate_effect({message = "Level up!"}, card)
             SMODS.smart_level_up_hand(nil, hand_chosen, false)
         end
@@ -117,7 +117,7 @@ SMODS.Joker {
                 }
             },
             calc_function = function(card)
-                local num = EF.get_time_table().min
+                local num = EF.FUNCS.get_time_table().min
                 if num % 2 == 1 then -- odd
                     card.joker_display_values.x_mult = card.ability.extra.bad_xmult
                 else -- even
@@ -136,7 +136,7 @@ SMODS.Joker {
     pos = {x=7,y=1},
     calculate = function(self, card, context)
         if context.joker_main then
-            local num = EF.get_time_table().min
+            local num = EF.FUNCS.get_time_table().min
             if num % 2 == 1 then -- odd
                 return {
                     xmult = card.ability.extra.bad_xmult
@@ -281,4 +281,39 @@ SMODS.Joker {
             end
         end
     end,
+}
+
+SMODS.Joker {
+    key = "comfycouch",
+    loc_txt = {
+        name = 'Comfy Couch',
+        text = {
+            '{C:dark_edition}+#1#{} joker slots',
+            '{C:red}#2#{} hand size'
+
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = { card.ability.extra.slots, card.ability.extra.hand_size } }
+    end,
+    config = { extra = { slots = 2, hand_size = -3 } },
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    immutable = true,
+    rarity = 3,
+    cost = 10,
+    atlas = "missing_joker",
+    -- pos = {x=8,y=1},
+    set_badges = function(self, card, badges)
+ 		badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
+ 	end,
+    add_to_deck = function(self, card, from_debuff)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit + to_big(card.ability.extra.slots))
+        G.hand:change_size(card.ability.extra.hand_size)
+	end,
+	remove_from_deck = function(self, card, from_debuff)
+		G.jokers.config.card_limit = lenient_bignum(G.jokers.config.card_limit - to_big(card.ability.extra.slots))
+        G.hand:change_size(-card.ability.extra.hand_size)
+	end,
 }

@@ -1,13 +1,22 @@
-EF = EF or {}
+local function EF_table_init()
+  return {
+    vars = {
+      jokers = { grapevine = {}, },
+      minigames = { minesweeper = {}, }
+    },
+    FUNCS = { UIDEF = {}, UI = {}, minesweeper = {},},
+  }
+end
+EF = EF_table_init()
 
-function EF.destroy_random_joker(seed)
+function EF.FUNCS.destroy_random_joker(seed)
     if not seed then
         seed = 'Destroy_joker'
     end
 
     local deletable_jokers = {}
     for _, joker in pairs(G.jokers.cards) do
-        if not joker.ability.eternal then deletable_jokers[#deletable_jokers + 1] = joker end
+        if not SMODS.is_eternal(joker) then deletable_jokers[#deletable_jokers + 1] = joker end
     end
 
     local chosen_joker = pseudorandom_element(deletable_jokers, seed)
@@ -16,7 +25,7 @@ function EF.destroy_random_joker(seed)
     end
 end
 
-function EF.get_most_played_hands()
+function EF.FUNCS.get_most_played_hands()
   local hands = {}
 
   for _, v in ipairs(G.P_CENTER_POOLS.Planet) do
@@ -47,9 +56,9 @@ end
 
 ---@param x number
 ---@return string
-function EF.normal_hour_to_am_pm(x) -- maybe add a config option to toggle between 12h and 24h
+function EF.FUNCS.normal_hour_to_am_pm(x) -- maybe add a config option to toggle between 12h and 24h
   if x < 0 or x > 24 then
-    return "ERR at EF.normal_hour_to_am_pm"
+    return "ERR at EF.FUNCS.normal_hour_to_am_pm"
   elseif x == 0 or x == 24 then
     return "12 AM"
   elseif 1 <= x and x <= 11 then
@@ -57,11 +66,11 @@ function EF.normal_hour_to_am_pm(x) -- maybe add a config option to toggle betwe
   elseif 12 <= x and x <= 23 then
     return (x-12).." PM"
   end
-  return "wtf at EF.normal_hour_to_am_pm"
+  return "wtf at EF.FUNCS.normal_hour_to_am_pm"
 end
 
 ---@return osdate
-function EF.get_time_table()
+function EF.FUNCS.get_time_table()
   ---@diagnostic disable-next-line: return-type-mismatch
   return os.date("*t", os.time())
 end
@@ -69,12 +78,27 @@ end
 ---performs a time check using `immutable.min_hour` and `immutable.max_hour` from card's config
 ---@param card Card
 ---@return boolean
-function EF.hour_check(card)
-  G.GAME.EF_stopwatch_voucher = G.GAME.EF_stopwatch_voucher or false
-  local time = EF.get_time_table()
+function EF.FUNCS.hour_check(card)
+  G.GAME.used_vouchers.v_EF_stopwatch = G.GAME.used_vouchers.v_EF_stopwatch or false
+  local time = EF.FUNCS.get_time_table()
   local hour = time.hour + time.min/60
   if (card.ability.immutable.min_hour <= hour and hour <= card.ability.immutable.max_hour) -- normal check
-      or G.GAME.EF_stopwatch_voucher -- voucher
+      or G.GAME.used_vouchers.v_EF_stopwatch -- voucher
+      then
+    return true
+  end
+  return false
+end
+
+---performs a year day check using `immutable.min_yday` and `immutable.max_yday` from card's config. the yday is in range 1-365
+---@param card Card
+---@return boolean
+function EF.FUNCS.year_day_check(card)
+  G.GAME.used_vouchers.v_EF_stopwatch = G.GAME.used_vouchers.v_EF_stopwatch or false
+  local yday = EF.FUNCS.get_time_table().yday
+
+  if (card.ability.immutable.min_yday <= yday and yday <= card.ability.immutable.max_yday) -- normal check
+      or G.GAME.used_vouchers.v_EF_stopwatch -- voucher
       then
     return true
   end

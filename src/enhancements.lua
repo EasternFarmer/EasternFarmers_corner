@@ -29,7 +29,7 @@ SMODS.Enhancement {
         if context.main_scoring and context.cardarea == G.play then
             local xmult = 0
 
-            xmult = root_calc(card.ability.xmult)
+            xmult = root_calc(card.ability.extra.xmult)
 
             return {
                 xmult = xmult

@@ -191,7 +191,7 @@ SMODS.Joker{
         }
     },
     loc_vars = function(self, info_queue, card)
-        return {vars = {G.GAME.EF_dandelion_xmult or 1.0}}
+        return {vars = {EF.vars.jokers.dandelion_xmult or 1.0}}
     end,
     joker_display_def = function (JokerDisplay)
         return {
@@ -204,7 +204,7 @@ SMODS.Joker{
                 }
             },
             calc_function = function(card)
-                card.joker_display_values.xmult =  G.GAME.EF_dandelion_xmult
+                card.joker_display_values.xmult =  EF.vars.jokers.dandelion_xmult
                 end
         }
     end,
@@ -222,19 +222,19 @@ SMODS.Joker{
  	end,
 
     add_to_deck = function (self, card, from_debuff)
-        G.GAME.EF_dandelion_xmult = G.GAME.EF_dandelion_xmult or 1.0
+        EF.vars.jokers.dandelion_xmult = EF.vars.jokers.dandelion_xmult or 1.0
     end,
 
     calculate = function(self, card, context)
         if context.selling_self and not context.blueprint then
-            G.GAME.EF_dandelion_xmult = G.GAME.EF_dandelion_xmult or 1.0
-            G.GAME.EF_dandelion_xmult = G.GAME.EF_dandelion_xmult + 0.5
-            SMODS.calculate_effect({message = G.GAME.EF_dandelion_xmult.."X", color = G.C.MULT}, card)
+            EF.vars.jokers.dandelion_xmult = EF.vars.jokers.dandelion_xmult or 1.0
+            EF.vars.jokers.dandelion_xmult = EF.vars.jokers.dandelion_xmult + 0.5
+            SMODS.calculate_effect({message = EF.vars.jokers.dandelion_xmult.."X", color = G.C.MULT}, card)
         end
         if context.joker_main or context.forcetrigger then
-            G.GAME.EF_dandelion_xmult = G.GAME.EF_dandelion_xmult or 1.0
+            EF.vars.jokers.dandelion_xmult = EF.vars.jokers.dandelion_xmult or 1.0
             return {
-                xmult = G.GAME.EF_dandelion_xmult
+                xmult = EF.vars.jokers.dandelion_xmult
             }
         end
     end
@@ -249,12 +249,12 @@ SMODS.Joker{
     loc_txt = {
         name = 'Grass',
         text = {
-            'Gains {C:chips}+2{} Chips{} per hand played',
-            '{C:inactive}(Currently {C:chips}+#1#{}{C:inactive} Chips){}'
+            'Gains {C:chips}+#1#{} Chips{} per hand played',
+            '{C:inactive}(Currently {C:chips}+#2#{}{C:inactive} Chips){}'
         }
     },
     loc_vars = function(self, info_queue, card)
-        return {vars = {card.ability.extra.current_chips}}
+        return {vars = {card.ability.extra.chip_gain, card.ability.extra.current_chips}}
     end,
     joker_display_def = function (JokerDisplay)
         return {
@@ -268,7 +268,7 @@ SMODS.Joker{
             end
         }
     end,
-    config = { extra = { current_chips = 2 } },
+    config = { extra = { current_chips = 5, chip_gain = 5 } },
     atlas = "Jokers",
     pos = { x = 3, y = 0 },
     unlocked = true,
@@ -288,8 +288,8 @@ SMODS.Joker{
                 trigger = "after", 
                 delay = 0.1, 
                 func = function()
-                    card.ability.extra.current_chips = card.ability.extra.current_chips + 2
-                    SMODS.calculate_effect({ message = "+2 Chips", color = G.C.CHIPS}, card)
+                    card.ability.extra.current_chips = card.ability.extra.current_chips + card.ability.extra.chip_gain
+                    SMODS.calculate_effect({ message = "+"..card.ability.extra.chip_gain.." Chips", color = G.C.CHIPS}, card)
                     return true
                 end
             }))
@@ -521,7 +521,7 @@ SMODS.Joker{
 
     add_to_deck = function(self, card, from_debuff)
         G.hand:change_size(card.ability.immutable.hand_size)
-        G.GAME.EF_grapevine_max_copy = 1
+        EF.vars.jokers.grapevine.max_copy = 1
     end,
     remove_from_deck = function(self, card, from_debuff)
         G.hand:change_size(-card.ability.immutable.hand_size)
@@ -537,11 +537,11 @@ SMODS.Joker{
             SMODS.calculate_effect({message = '+2 Mult', color = G.C.MULT}, card)
         end
         if context.end_of_round and context.game_over == false and not context.blueprint then
-            G.GAME.EF_grapevine_curr_copy = G.GAME.EF_grapevine_curr_copy or 0
+            EF.vars.jokers.grapevine.curr_copy = EF.vars.jokers.grapevine.curr_copy or 0
 
-            if G.GAME.EF_grapevine_curr_copy < G.GAME.EF_grapevine_max_copy then
+            if EF.vars.jokers.grapevine.curr_copy < EF.vars.jokers.grapevine.max_copy then
 
-                G.GAME.EF_grapevine_curr_copy = G.GAME.EF_grapevine_curr_copy + 1
+                EF.vars.jokers.grapevine.curr_copy = EF.vars.jokers.grapevine.curr_copy + 1
                 if #G.jokers.cards <= G.jokers.config.card_limit then
                     G.E_MANAGER:add_event(Event({
                         trigger = "after", 
@@ -562,7 +562,7 @@ SMODS.Joker{
             end
         end
         if context.ending_shop then
-            G.GAME.EF_grapevine_curr_copy = 0
+            EF.vars.jokers.grapevine.curr_copy = 0
         end
     end
 }

@@ -4,7 +4,7 @@ SMODS.ConsumableType {
         name = 'Root Spectral',
         collection = "Root Spectrals"
     },
-    shop_rate = 0.1,
+    shop_rate = 0.3,
     collection_rows = { 4, 5 },
     primary_colour = HEX('8C6631'),
     secondary_colour = HEX("735121"),
@@ -118,8 +118,8 @@ SMODS.Consumable {
     end,
     use = function(self, card, area, copier)
 
-        EF.destroy_random_joker() -- src/helper_functions.lua
-        EF.destroy_random_joker()
+        EF.FUNCS.destroy_random_joker() -- src/helper_functions.lua
+        EF.FUNCS.destroy_random_joker()
         --create blueprint
         local card_ = SMODS.create_card{ set = "Joker", area = G.jokers, key = "j_blueprint"}
         card_:add_to_deck()

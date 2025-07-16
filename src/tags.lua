@@ -11,7 +11,6 @@ SMODS.Tag{
     end,
     discovered = true,
     apply = function(self, tag, context)
-        -- print(context.type)
         if context.type == 'new_blind_choice' then
             local lock = tag.ID
             G.CONTROLLER.locks[lock] = true
