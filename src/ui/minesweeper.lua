@@ -1,12 +1,12 @@
-local minesweeper_table = EF.vars.minigames.minesweeper
 EF.vars.minigames.minesweeper.config = {
     cell_minh = 1,
     cell_minw = 1,
     cell_padding = 0.1,
     cell_color = G.C.BLUE,
-    width = 12, -- width, height and mines changed based on difficulty!
+    width = 12, -- width, height and mines changed based on difficulty! this preset is the hard difficulty
     height = 6,
-    mines = 6, -- (width*height)/mines = the total number of mines
+    mines = 6,  -- `math.floor((width*height)/mines)` = the total number of mines,
+                -- aka `1/mines` of the field is mines
 }
 EF.vars.minigames.minesweeper.config.reward_list = {
     easy = {
@@ -17,18 +17,18 @@ EF.vars.minigames.minesweeper.config.reward_list = {
         "{C:white,X:mult}X10{C:white} Mult for {C:gold}3{C:white} rounds",
     },
     medium = {
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
+        "{C:white,X:mult}X3{C:white} Blind size for {C:gold}3{C:white} rounds",
+        "{C:white,X:mult}X2{C:white} Blind Size for {C:gold}3{C:white} rounds",
+        "{C:white,X:mult}X4{C:white} Mult for {C:gold}3{C:white} rounds",
+        "{C:white,X:mult}X0.2{C:white} Blind size for {C:gold}3{C:white} rounds",
+        "{C:white,X:mult}X20{C:white} Mult for {C:gold}3{C:white} rounds",
     },
     hard = {
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
+        "{C:white,X:mult}X6{C:white} Blind size for {C:gold}3{C:white} rounds",
+        "{C:white,X:mult}X4{C:white} Blind Size for {C:gold}3{C:white} rounds",
+        "{C:white,X:mult}X8{C:white} Mult for {C:gold}3{C:white} rounds",
+        "{C:white,X:mult}X0.1{C:white} Blind size for {C:gold}3{C:white} rounds",
+        "{C:white,X:mult}X40{C:white} Mult for {C:gold}3{C:white} rounds",
     },
 }
 
@@ -53,20 +53,20 @@ function EF.FUNCS.UIDEF.minesweeper_field()
         ["medium"] = {width = 8, height = 8, mines = 6},
         ["hard"] = {width = 14, height = 8, mines = 6},
     }
-    local chosen_settings = difficulty_settings[minesweeper_table.difficulty] or {}
+    local chosen_settings = difficulty_settings[EF.vars.minigames.minesweeper.difficulty] or {}
     local config = EF.vars.minigames.minesweeper.config
     config.width = chosen_settings["width"] or config.width
     config.height = chosen_settings['height'] or config.height
     config.mines = chosen_settings['mines'] or config.mines
     --init the game table
-    if not minesweeper_table.bombs_placed then
-        minesweeper_table.FIELD_TABLE = {}
+    if not EF.vars.minigames.minesweeper.bombs_placed then
+        EF.vars.minigames.minesweeper.FIELD_TABLE = {}
         for i = 1, config.height do
             local row = {}
             for j = 1, config.width do
                 table.insert(row,{bomb = false, text = ""})
             end
-            table.insert(minesweeper_table.FIELD_TABLE,row)
+            table.insert(EF.vars.minigames.minesweeper.FIELD_TABLE,row)
         end
     end
 
@@ -86,20 +86,20 @@ function G.FUNCS.EF_minesweeper_cell(e)
     local function placemine(config)
         local x = math.random(1, config.width)
         local y = math.random(1, config.height)
-        if x ~= e.config.cell_pos.x and y ~= e.config.cell_pos.y and not minesweeper_table.FIELD_TABLE[y][x].bomb then
-            minesweeper_table.FIELD_TABLE[y][x].bomb = true
+        if x ~= e.config.cell_pos.x and y ~= e.config.cell_pos.y and not EF.vars.minigames.minesweeper.FIELD_TABLE[y][x].bomb then
+            EF.vars.minigames.minesweeper.FIELD_TABLE[y][x].bomb = true
         else
             placemine(config)
         end
     end
     local config = e.config.orginal_config
-    if not minesweeper_table.bombs_placed then
+    if not EF.vars.minigames.minesweeper.bombs_placed then
         for i=1, math.floor(config.height*config.width/config.mines) do
             placemine(config)
         end
-        minesweeper_table.bombs_placed = true
+        EF.vars.minigames.minesweeper.bombs_placed = true
     end
-    if minesweeper_table.FIELD_TABLE[e.config.cell_pos.y][e.config.cell_pos.x].bomb then
+    if EF.vars.minigames.minesweeper.FIELD_TABLE[e.config.cell_pos.y][e.config.cell_pos.x].bomb then -- game over
         e.config.colour = G.C.ORANGE
         G.FUNCS.exit_overlay_menu()
         EF.FUNCS.minesweeper.give_reward_set_text()
@@ -117,15 +117,15 @@ function G.FUNCS.EF_minesweeper_cell(e)
             if x < 1 or y < 1 or x > config.width or y > config.height then
                 goto continue
             end
-            if minesweeper_table.FIELD_TABLE[y][x].bomb then
+            if EF.vars.minigames.minesweeper.FIELD_TABLE[y][x].bomb then
                 neighbour_bombs = neighbour_bombs + 1
             end
             ::continue::
         end
-        if minesweeper_table.FIELD_TABLE[curr_y][curr_x].text == "" then
-            minesweeper_table.score = (minesweeper_table.score or 0) + 1
+        if EF.vars.minigames.minesweeper.FIELD_TABLE[curr_y][curr_x].text == "" then
+            EF.vars.minigames.minesweeper.score = (EF.vars.minigames.minesweeper.score or 0) + 1
         end
-        minesweeper_table.FIELD_TABLE[curr_y][curr_x].text = number_format(neighbour_bombs)
+        EF.vars.minigames.minesweeper.FIELD_TABLE[curr_y][curr_x].text = number_format(neighbour_bombs)
     end
 end
 

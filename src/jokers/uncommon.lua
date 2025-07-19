@@ -473,7 +473,7 @@ SMODS.Joker {
             end
         end
         card.ability.zzz.hand_chosen = pseudorandom_element(viable_hands, "EF_safe")
-        print(card.ability.zzz.hand_chosen)
+        -- print(card.ability.zzz.hand_chosen)
     end,
     calculate = function(self, card, context)
         if context.joker_main then
@@ -502,5 +502,47 @@ SMODS.Joker {
                 }
             end
         end
+    end
+}
+
+SMODS.Joker {
+    key = "draw+2",
+    loc_txt = {
+        name = 'Draw +2',
+        text = {
+            '{C:gold}+#1#{} hand size',
+            'Reduces hand size by {C:gold}1{} after every hand',
+            'Resets after {C:gold}blind{} is defeated',
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card.ability.extra.curr_hand_size_bonus} }
+    end,
+    config = { extra = {hand_size = 2, curr_hand_size_bonus = 2}},
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = false,
+    rarity = 2,
+    cost = 6,
+    atlas = "missing_joker",
+    -- pos = {x=5,y=1},
+    add_to_deck = function (self, card, from_debuff)
+        G.hand:change_size(card.ability.extra.hand_size)
+    end,
+    calculate = function(self, card, context)
+        if context.after then
+            card.ability.extra.curr_hand_size_bonus = card.ability.extra.curr_hand_size_bonus - 1
+            G.hand:change_size(-1)
+            SMODS.calculate_effect({message = "-1 hand size", colour = G.C.ORANGE}, card)
+        end
+        if context.end_of_round and context.game_over == false then
+            local change = card.ability.extra.hand_size - card.ability.extra.curr_hand_size_bonus
+            card.ability.extra.curr_hand_size_bonus = card.ability.extra.hand_size
+            G.hand:change_size(change)
+            SMODS.calculate_effect({message = "+"..change.." hand size", colour = G.C.ORANGE}, card)
+        end
+    end,
+    remove_from_deck = function (self, card, from_debuff)
+        G.hand:change_size(-card.ability.extra.curr_hand_size_bonus)
     end
 }

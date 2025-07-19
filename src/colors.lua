@@ -4,6 +4,7 @@ G.C.EF = {
     ART_CREDIT = HEX("2b4ae3"),
     IDEA_ART_CREDIT = HEX("2b97c2"),
     MINESWEEPER = HEX('bdbdbd'),
+    MINIGAME = HEX('03c93f'),
 }
 
 -- https://github.com/nh6574/JoyousSpring/blob/main/src/globals.lua#L71

@@ -20,3 +20,30 @@ function EF.FUNCS.UI.minesweeper_score()
         definition = EF.FUNCS.UIDEF.minesweeper_score(),
     }
 end
+
+-- Parlor (Blue prince reference)
+assert(SMODS.load_file("src/ui/parlor/parlor.lua"))()
+
+function EF.FUNCS.UI.parlor()
+
+    G.SETTINGS.paused = true
+
+    EF.vars.minigames.parlor.was_puzzle_chosen = false
+    
+    G.FUNCS.overlay_menu{
+        definition = EF.FUNCS.UIDEF.parlor(),
+    }
+end
+
+function EF.FUNCS.UI.parlor_score(win)
+    G.SETTINGS.paused = true
+    if win then
+        G.FUNCS.overlay_menu{
+            definition = EF.FUNCS.UIDEF.parlor_win(),
+        }
+    else
+        G.FUNCS.overlay_menu{
+            definition = EF.FUNCS.UIDEF.parlor_lose(),
+        }
+    end
+end

@@ -431,7 +431,7 @@ SMODS.Joker{
             '{C:green,s:0.8}reduces by 1 each round{}{s:0.8} -> {C:green,s:0.8}reduces by #3# each round{}'
         }
     },
-    loc_vars = function(seld, info_queue, card)
+    loc_vars = function(self, info_queue, card)
         return { vars = { card.ability.extra.Xvar, 6*card.ability.extra.Xvar, 1/card.ability.extra.Xvar} }
     end,
     config = { extra = {Xvar = 3} },

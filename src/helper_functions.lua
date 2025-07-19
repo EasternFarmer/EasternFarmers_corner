@@ -2,7 +2,7 @@ local function EF_table_init()
   return {
     vars = {
       jokers = { grapevine = {}, },
-      minigames = { minesweeper = {}, }
+      minigames = { minesweeper = {}, parlor = {} }
     },
     FUNCS = { UIDEF = {}, UI = {}, minesweeper = {},},
   }
@@ -103,4 +103,23 @@ function EF.FUNCS.year_day_check(card)
     return true
   end
   return false
+end
+
+---@param text string
+---@return string[]
+---splits every 3rd word `'a b c d e f'` -> `{'a b c', 'd e f'}`
+function EF.FUNCS.split_text_3(text)
+    local words = {}
+
+    for word in string.gmatch(text, "%S+") do
+        table.insert(words, word)
+    end
+
+    local result = {}
+    for i = 1, #words, 3 do
+        local line = table.concat({words[i], words[i+1], words[i+2]}, " ")
+        table.insert(result, line)
+    end
+
+    return result
 end

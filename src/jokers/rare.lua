@@ -175,8 +175,8 @@ SMODS.Joker {
     calculate = function(self, card, context)
         if context.before and context.main_eval and not context.blueprint then
             local number = 0
-            for _, scored_card in ipairs(context.scoring_hand) do
-                if not scored_card:is_face() and scored_card:get_id() ~= 14 then
+            for _, scored_card in ipairs(context.scoring_hand) do            
+                if not scored_card.debuff and not scored_card:is_face() and scored_card:get_id() ~= 14 then
                     number = number + 1
                     scored_card:set_ability('m_EF_root', nil, true)
                     G.E_MANAGER:add_event(Event({
@@ -253,7 +253,7 @@ SMODS.Joker {
     config = { extra = { retrigger = 1 } },
     unlocked = true,
     discovered = true,
-    blueprint_compat = false,
+    blueprint_compat = true,
     rarity = 3,
     cost = 10,
     atlas = "Jokers",
@@ -262,9 +262,6 @@ SMODS.Joker {
  		badges[#badges+1] = create_badge('Idea Credit: alperen_pro', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
  	end,
     calculate = function(self, card, context)
-        if context.blueprint then
-            return
-        end
         if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= card then
             local name = string.gsub(context.other_card.config.center.name, "j_.+_", "", 1)
             if name ~= "e" then
