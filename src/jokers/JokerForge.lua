@@ -4,7 +4,7 @@ SMODS.Atlas({
     px = 71,
     py = 95, 
     atlas_table = "ASSET_ATLAS"
-}):register()
+})
 
 SMODS.Joker{ --Joker Forge
     name = "Joker Forge",

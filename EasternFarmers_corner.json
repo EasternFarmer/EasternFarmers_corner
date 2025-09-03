@@ -12,6 +12,7 @@
   "priority": 1,
   "badge_colour": "588511",
   "badge_text_colour": "FFFFFF",
+  "dump_loc": false,
   "dependencies": [
     "Steamodded (>=1.0.0~BETA-0711a)"
   ]

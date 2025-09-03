@@ -1,3 +1,5 @@
+---@diagnostic disable: duplicate-set-field
+
 local set_ability_ref = Card.set_ability
 function Card:set_ability(center, initial, delay_sprites)
     set_ability_ref(self, center, initial, delay_sprites)
@@ -6,4 +8,14 @@ function Card:set_ability(center, initial, delay_sprites)
             self:set_edition("e_negative")
         end
     end
+end
+
+-- src/ui/snake.lua - arrow key movement support
+local love_keypressed_ref = love.keypressed
+function love.keypressed(key)
+    if key == "up" or key == "down" or key == "left" or key == "right" then
+        G.FUNCS.EF_snake_button({config={id="EF_snake_"..key}})
+    end
+
+    love_keypressed_ref(key)
 end

@@ -1,13 +1,19 @@
 local function EF_table_init()
   return {
+    DEBUG = false,
     vars = {
       jokers = { grapevine = {}, },
-      minigames = { minesweeper = {}, parlor = {} }
+      minigames = { minesweeper = {}, parlor = {}, snake = {} }
     },
-    FUNCS = { UIDEF = {}, UI = {}, minesweeper = {},},
+    FUNCS = { UIDEF = {}, UI = {}, minesweeper = {}, snake = {}},
   }
 end
 EF = EF_table_init()
+if EF.DEBUG then
+  for i=1,100 do
+    sendFatalMessage("EF.DEBUG IS TURNED ON", "EF.helper_functions.lua")
+  end
+end
 
 function EF.FUNCS.destroy_random_joker(seed)
     if not seed then

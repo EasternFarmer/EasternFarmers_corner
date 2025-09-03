@@ -60,9 +60,9 @@ function EF.FUNCS.UIDEF.parlor_puzzle()
                 
             }},
             {n = G.UIT.R, config = { align = "tm", padding = 0.3, shadow = true }, nodes = {
-                {n = G.UIT.C, config = {minw = 3, minh = 3, colour = box_colors[1], r = 0.1, my_index = 1, button = "EF_parlor_box" }, nodes = {}},
-                {n = G.UIT.C, config = {minw = 3, minh = 3, colour = box_colors[2], r = 0.1, my_index = 2, button = "EF_parlor_box" }, nodes = {}},
-                {n = G.UIT.C, config = {minw = 3, minh = 3, colour = box_colors[3], r = 0.1, my_index = 3, button = "EF_parlor_box" }, nodes = {}},
+                {n = G.UIT.C, config = {minw = 3, minh = 3, colour = box_colors[1], r = 0.1, my_index = 1, button = "EF_parlor_box", hover = true, shadow = true }, nodes = {}},
+                {n = G.UIT.C, config = {minw = 3, minh = 3, colour = box_colors[2], r = 0.1, my_index = 2, button = "EF_parlor_box", hover = true, shadow = true }, nodes = {}},
+                {n = G.UIT.C, config = {minw = 3, minh = 3, colour = box_colors[3], r = 0.1, my_index = 3, button = "EF_parlor_box", hover = true, shadow = true }, nodes = {}},
             }},
             {n = G.UIT.R, config = { align = "tm", padding = 0.3 }, nodes = {
                 {n = G.UIT.C, config = { align = "tm", maxw = 3, minh = 1}, nodes = {{n = G.UIT.T, config = { text=table.concat(EF.FUNCS.split_text_3(chosen_puzzle[1]), '\n'), scale = 0.75, colour = G.C.UI.TEXT_LIGHT}, nodes = {}},}},
@@ -85,7 +85,9 @@ end
 
 function EF.FUNCS.UIDEF.parlor_win()
     local reward_dollars = 15
-    ease_dollars(reward_dollars)
+    if not EF.vars.minigames.main_menu then
+        ease_dollars(reward_dollars)
+    end
     return create_UIBox_generic_options{contents = {
         {n = G.UIT.O, config = {object = UIBox{definition = 
         {
@@ -93,7 +95,7 @@ function EF.FUNCS.UIDEF.parlor_win()
             config = {r = 0.1, minw = 8, minh = 2, align = "cm", colour = G.C.BLACK},
             nodes = {
                 {n = G.UIT.R, config = {align = "cm"}, nodes = SMODS.localize_box(loc_parse_string("{C:white}Congrats you picked the"), {scale = 2})},
-                {n = G.UIT.R, config = {align = "cm"}, nodes = SMODS.localize_box(loc_parse_string("{C:white}right answer and won {C:money}$"..tostring(reward_dollars)), {scale = 2})},
+                {n = G.UIT.R, config = {align = "cm"}, nodes = SMODS.localize_box(loc_parse_string("{C:white}right answer and won {C:money}$"..(not EF.vars.minigames.main_menu and tostring(reward_dollars) or "0 because main menu")), {scale = 2})},
             }
         }, config = {offset = {x=0,y=0}}
         }}}

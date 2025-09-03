@@ -4,7 +4,7 @@ SMODS.Atlas({
     px = 71,
     py = 95, 
     atlas_table = "ASSET_ATLAS"
-}):register()
+})
 
 SMODS.Atlas({
     key = "missing_joker",
@@ -12,7 +12,7 @@ SMODS.Atlas({
     px = 71,
     py = 95,
     atlas_table = "ASSET_ATLAS"
-}):register()
+})
 
 SMODS.Atlas({
     key = "Boosters", 
@@ -20,7 +20,7 @@ SMODS.Atlas({
     px = 71,
     py = 95, 
     atlas_table = "ASSET_ATLAS"
-}):register()
+})
 
 SMODS.Atlas({
     key = "Spectrals", 
@@ -28,7 +28,7 @@ SMODS.Atlas({
     px = 71,
     py = 95, 
     atlas_table = "ASSET_ATLAS"
-}):register()
+})
 
 SMODS.Atlas({
     key = "Tags", 
@@ -36,7 +36,7 @@ SMODS.Atlas({
     px = 34,
     py = 34, 
     atlas_table = "ASSET_ATLAS"
-}):register()
+})
 
 SMODS.Atlas({ -- Gamblers dream animation
     key = "LetsGoGambling", 
@@ -44,7 +44,7 @@ SMODS.Atlas({ -- Gamblers dream animation
     px = 71,
     py = 95,
     atlas_table = "ASSET_ATLAS"
-}):register()
+})
 
 SMODS.Atlas({
     key = "Enhancements", 
@@ -52,7 +52,7 @@ SMODS.Atlas({
     px = 71,
     py = 95,
     atlas_table = "ASSET_ATLAS"
-}):register()
+})
 
 SMODS.Atlas({
     key = "Vouchers", 
@@ -60,4 +60,4 @@ SMODS.Atlas({
     px = 71,
     py = 95,
     atlas_table = "ASSET_ATLAS"
-}):register()
+})

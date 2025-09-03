@@ -14,3 +14,4 @@ local curr_dir = "src/consumables/minigames/"
 
 assert(SMODS.load_file(curr_dir.."minesweeper.lua"))()
 assert(SMODS.load_file(curr_dir.."parlor.lua"))()
+assert(SMODS.load_file(curr_dir.."snake.lua"))()

@@ -1,10 +1,3 @@
-SMODS.Rarity {
-    key = "minesweeper_reward",
-    loc_txt = { name = "Minesweeper" },
-    badge_colour = G.C.EF.MINESWEEPER,
-    default_weight = 0,
-}
-
 SMODS.Consumable {
     key = 'minesweeper_card_easy',
     set = 'minigame_card',
@@ -94,6 +87,13 @@ SMODS.Consumable {
     can_use = function(self, card)
         return true
     end
+}
+
+SMODS.Rarity {
+    key = "minesweeper_reward",
+    loc_txt = { name = "Minesweeper" },
+    badge_colour = G.C.EF.MINESWEEPER,
+    default_weight = 0,
 }
 
 if true then -- just so i can hide these 15 jokers

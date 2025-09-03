@@ -34,7 +34,7 @@ EF.vars.minigames.minesweeper.config.reward_list = {
 
 local function minesweeper_cell(config,x,y)
     return {n = G.UIT.C, config = {button="EF_minesweeper_cell",orginal_config = config,cell_pos = {x=x,y=y}, align = "cm", minh = config.cell_minh, minw = config.cell_minw, colour = config.cell_color, r=0.1,
-                tooltip = {title="Click to uncover", text = { "(No flags available)", "Current bombs: "..math.floor(config.width*config.height/config.mines)}}, juice = true, hover = true,
+                tooltip = {title="Click to uncover", text = { "(No flags available)", "Current bombs: "..math.floor(config.width*config.height/config.mines)}}, juice = true, hover = true, shadow = true,
             }, nodes = {{n=G.UIT.T, config={ref_table = EF.vars.minigames.minesweeper.FIELD_TABLE[y][x], ref_value = 'text', scale = 0.75, colour = G.C.WHITE, shadow = true}}}}
 end
 
@@ -197,18 +197,17 @@ function EF.FUNCS.minesweeper.give_reward_set_text()
     local reward_chosen = 0
     if reward <= 1/5 then
         reward_chosen = 1
-        SMODS.add_card{key = "j_EF_minesweeper_"..difficulty.."_"..number_format(reward_chosen)}
     elseif reward <= 2/5 then
         reward_chosen = 2
-        SMODS.add_card{key = "j_EF_minesweeper_"..difficulty.."_"..number_format(reward_chosen)}
     elseif reward <= 3/5 then
         reward_chosen = 3
-        SMODS.add_card{key = "j_EF_minesweeper_"..difficulty.."_"..number_format(reward_chosen)}
     elseif reward <= 4/5 then
         reward_chosen = 4
-        SMODS.add_card{key = "j_EF_minesweeper_"..difficulty.."_"..number_format(reward_chosen)}
     else
         reward_chosen = 5
+    end
+
+    if not EF.vars.minigames.main_menu then
         SMODS.add_card{key = "j_EF_minesweeper_"..difficulty.."_"..number_format(reward_chosen)}
     end
 

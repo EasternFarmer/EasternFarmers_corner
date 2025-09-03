@@ -339,110 +339,111 @@ SMODS.Joker {
         badges[#badges+1] = create_badge('Idea Credit: plantform', G.C.EF.IDEA_CREDIT, G.C.BLACK, 0.8 )
     end
 }
+if EF.DEBUG then
+    SMODS.Joker {
+        key = "yin",
+        loc_txt = {
+            name = 'Yin (wip)',
+            text = {
+                '<effect not decided>',
+                'Triggers either when',
+                '{C:green}#1# in #2#{} succeeds',
+                'or {C:gold}Yang{} fails'
+            }
+        },
+        loc_vars = function(self, info_queue, card)
+            local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "EF_yin")
+            return { vars = {numerator, denominator} }
+        end,
+        config = { extra = {odds = 2}, state = {activated = false} },
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = false,
+        rarity = 2,
+        cost = 6,
+        atlas = "missing_joker",
+        -- pos = {x=5,y=1},
+        calculate = function(self, card, context)
+            local function yin()
+                print("yin")
+                SMODS.calculate_effect({message = "hello"}, card)
+            end
+            if context.pseudorandom_result and context.result and context.identifier == "EF_yang" then
+                card.ability.state.activated = true
+            end
+            if context.joker_main and not context.blueprint and card.ability.state.activated == false then
+                if SMODS.pseudorandom_probability(card, "EF_yin", 1, card.ability.extra.odds, "EF_yin") then
+                    yin()
+                    card.ability.state.activated = true
+                end
+                return
+            end
+            if context.pseudorandom_result and not context.result and card.ability.state.activated == false then
+                print(context.identifier)
+                print("yinyin")
+                if context.identifier == "EF_yang" then
+                    yin()
+                    card.ability.state.activated = true
+                end
+            end
+            if context.post_joker then
+                card.ability.state.activated = false
+            end
+        end
+    }
 
-SMODS.Joker {
-    key = "yin",
-    loc_txt = {
-        name = 'Yin (wip)',
-        text = {
-            '<effect not decided>',
-            'Triggers either when',
-            '{C:green}#1# in #2#{} succeeds',
-            'or {C:gold}Yang{} fails'
-        }
-    },
-    loc_vars = function(self, info_queue, card)
-        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "EF_yin")
-        return { vars = {numerator, denominator} }
-    end,
-    config = { extra = {odds = 2}, state = {activated = false} },
-    unlocked = true,
-    discovered = true,
-    blueprint_compat = false,
-    rarity = 2,
-    cost = 6,
-    atlas = "missing_joker",
-    -- pos = {x=5,y=1},
-    calculate = function(self, card, context)
-        local function yin()
-            print("yin")
-            SMODS.calculate_effect({message = "hello"}, card)
-        end
-        if context.pseudorandom_result and context.result and context.identifier == "EF_yang" then
-            card.ability.state.activated = true
-        end
-        if context.joker_main and not context.blueprint and card.ability.state.activated == false then
-            if SMODS.pseudorandom_probability(card, "EF_yin", 1, card.ability.extra.odds, "EF_yin") then
-                yin()
+    SMODS.Joker {
+        key = "yang",
+        loc_txt = {
+            name = 'Yang (wip)',
+            text = {
+                '<effect not decided>',
+                'Triggers either when',
+                '{C:green}#1# in #2#{} succeeds',
+                'or {C:gold}Yin{} fails'
+            }
+        },
+        loc_vars = function(self, info_queue, card)
+            local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "EF_yang")
+            return { vars = {numerator, denominator} }
+        end,
+        config = { extra = {odds = 2}, state = {activated = false} },
+        unlocked = true,
+        discovered = true,
+        blueprint_compat = false,
+        rarity = 2,
+        cost = 6,
+        atlas = "missing_joker",
+        -- pos = {x=5,y=1},
+        calculate = function(self, card, context)
+            local function yang()
+                print("yang")
+                SMODS.calculate_effect({message = "hello"}, card)
+            end
+            if context.pseudorandom_result and context.result and context.identifier == "EF_yin" then
                 card.ability.state.activated = true
             end
-            return
-        end
-        if context.pseudorandom_result and not context.result and card.ability.state.activated == false then
-            print(context.identifier)
-            print("yinyin")
-            if context.identifier == "EF_yang" then
-                yin()
-                card.ability.state.activated = true
+            if context.joker_main and not context.blueprint and card.ability.state.activated == false then
+                if SMODS.pseudorandom_probability(card, "EF_yang", 1, card.ability.extra.odds, "EF_yang") then
+                    yang()
+                    card.ability.state.activated = true
+                end
+                return
+            end
+            if context.pseudorandom_result and not context.result and card.ability.state.activated == false then
+                print(context.identifier)
+                print("yangyang")
+                if context.identifier == "EF_yin" then
+                    yang()
+                    card.ability.state.activated = true
+                end
+            end
+            if context.post_joker then
+                card.ability.state.activated = false
             end
         end
-        if context.post_joker then
-            card.ability.state.activated = false
-        end
-    end
-}
-
-SMODS.Joker {
-    key = "yang",
-    loc_txt = {
-        name = 'Yang (wip)',
-        text = {
-            '<effect not decided>',
-            'Triggers either when',
-            '{C:green}#1# in #2#{} succeeds',
-            'or {C:gold}Yin{} fails'
-        }
-    },
-    loc_vars = function(self, info_queue, card)
-        local numerator, denominator = SMODS.get_probability_vars(card, 1, card.ability.extra.odds, "EF_yang")
-        return { vars = {numerator, denominator} }
-    end,
-    config = { extra = {odds = 2}, state = {activated = false} },
-    unlocked = true,
-    discovered = true,
-    blueprint_compat = false,
-    rarity = 2,
-    cost = 6,
-    atlas = "missing_joker",
-    -- pos = {x=5,y=1},
-    calculate = function(self, card, context)
-        local function yang()
-            print("yang")
-            SMODS.calculate_effect({message = "hello"}, card)
-        end
-        if context.pseudorandom_result and context.result and context.identifier == "EF_yin" then
-            card.ability.state.activated = true
-        end
-        if context.joker_main and not context.blueprint and card.ability.state.activated == false then
-            if SMODS.pseudorandom_probability(card, "EF_yang", 1, card.ability.extra.odds, "EF_yang") then
-                yang()
-                card.ability.state.activated = true
-            end
-            return
-        end
-        if context.pseudorandom_result and not context.result and card.ability.state.activated == false then
-            print(context.identifier)
-            print("yangyang")
-            if context.identifier == "EF_yin" then
-                yang()
-                card.ability.state.activated = true
-            end
-        end
-        if context.post_joker then
-            card.ability.state.activated = false
-        end
-    end
-}
+    }
+end
 
 SMODS.Joker {
     key = "safe",

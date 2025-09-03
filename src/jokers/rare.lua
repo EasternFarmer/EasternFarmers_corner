@@ -314,3 +314,36 @@ SMODS.Joker {
         G.hand:change_size(-card.ability.extra.hand_size)
 	end,
 }
+
+SMODS.Joker {
+    key = "blueprince",
+    loc_txt = {
+        name = 'Blue Prince',
+        text = {
+            'This joker gains {X:mult,C:white}X#1#{} Mult',
+            'every time it is {C:gold}copied{}',
+            'by another joker',
+            "{C:inactive}(Currently {X:mult,C:white}X#2#{}{C:inactive} Mult){}",
+        }
+    },
+    loc_vars = function(self, info_queue, card)
+        return { vars = {card.ability.extra.gain, card.ability.extra.xmult} }
+    end,
+    config = { extra = {gain = 0.05, xmult = 1}},
+    unlocked = true,
+    discovered = true,
+    blueprint_compat = true,
+    rarity = 3,
+    cost = 8,
+    atlas = "missing_joker",
+    calculate = function(self, card, context)
+        if context.joker_main and context.blueprint then
+            card.ability.extra.xmult = card.ability.extra.xmult + card.ability.extra.gain
+        end
+        if context.joker_main then
+            return {
+                xmult = card.ability.extra.xmult
+            }
+        end
+    end,
+}
