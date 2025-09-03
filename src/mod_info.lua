@@ -82,12 +82,12 @@ end
 
 --Minigames button
 G.FUNCS.EF_minigames_mainmenu = function(e)
-    EF.vars.minigames.main_menu = true
+    -- EF.vars.minigames.main_menu
     if e.config.id == "EF_minesweeper_mainmenu" then
-        EF.FUNCS.UI.minesweeper("hard")
+        EF.FUNCS.UI.minesweeper("hard", true)
     elseif e.config.id == "EF_parlor_mainmenu" then
-        EF.FUNCS.UI.parlor()
+        EF.FUNCS.UI.parlor(true)
     elseif e.config.id == "EF_snake_mainmenu" then
-        EF.FUNCS.UI.snake("hard")
+        EF.FUNCS.UI.snake("hard", true)
     end
 end

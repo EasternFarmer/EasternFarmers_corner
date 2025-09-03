@@ -6,7 +6,8 @@ local ui_dir = "src/ui/"
 assert(SMODS.load_file(ui_dir.."minesweeper.lua"))()
 
 ---@param difficulty "easy"|"medium"|"hard"
-function EF.FUNCS.UI.minesweeper(difficulty)
+---@param main_menu? boolean
+function EF.FUNCS.UI.minesweeper(difficulty, main_menu)
 
     G.SETTINGS.paused = true
     --game vars
@@ -14,7 +15,7 @@ function EF.FUNCS.UI.minesweeper(difficulty)
     EF.vars.minigames.minesweeper.score = 0
     EF.vars.minigames.minesweeper.difficulty = difficulty or "hard"
 
-    EF.vars.minigames.main_menu = false
+    EF.vars.minigames.main_menu = main_menu or false
     
     G.FUNCS.overlay_menu{
         definition = EF.FUNCS.UIDEF.minesweeper(),
@@ -31,13 +32,14 @@ end
 -- Parlor (Blue prince reference)
 assert(SMODS.load_file(ui_dir.."parlor/parlor.lua"))()
 
-function EF.FUNCS.UI.parlor()
+---@param main_menu? boolean
+function EF.FUNCS.UI.parlor(main_menu)
 
     G.SETTINGS.paused = true
 
     EF.vars.minigames.parlor.was_puzzle_chosen = false
 
-    EF.vars.minigames.main_menu = false
+    EF.vars.minigames.main_menu = main_menu or false
     
     G.FUNCS.overlay_menu{
         definition = EF.FUNCS.UIDEF.parlor(),
@@ -61,7 +63,8 @@ end
 assert(SMODS.load_file(ui_dir.."snake.lua"))()
 
 ---@param difficulty "easy"|"hard"
-function EF.FUNCS.UI.snake(difficulty)
+---@param main_menu? boolean
+function EF.FUNCS.UI.snake(difficulty, main_menu)
 
     G.SETTINGS.paused = true
     
@@ -73,7 +76,7 @@ function EF.FUNCS.UI.snake(difficulty)
     
     EF.vars.minigames.snake.difficulty = difficulty or "hard"
 
-    EF.vars.minigames.main_menu = false
+    EF.vars.minigames.main_menu = main_menu or false
 
     G.FUNCS.overlay_menu{
         definition = EF.FUNCS.UIDEF.snake(),
