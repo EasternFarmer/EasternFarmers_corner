@@ -95,3 +95,15 @@ if EF.DEBUG then
         EF.FUNCS.UI.snake(d or "hard")
     end
 end
+
+-- BlackJack
+assert(SMODS.load_file(ui_dir.."blackjack.lua"))()
+
+function EF.FUNCS.UI.blackjack(main_menu)
+    EF.vars.minigames.main_menu = main_menu or false
+    
+    G.SETTINGS.paused = true
+    G.FUNCS.overlay_menu{
+        definition = EF.FUNCS.UIDEF.blackjack_pick(),
+    }
+end

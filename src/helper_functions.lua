@@ -3,9 +3,10 @@ local function EF_table_init()
     DEBUG = false,
     vars = {
       jokers = { grapevine = {}, },
-      minigames = { minesweeper = {}, parlor = {}, snake = {} }
+      minigames = { minesweeper = {}, parlor = {}, snake = {}, blackjack = {} }
     },
-    FUNCS = { UIDEF = {}, UI = {}, minesweeper = {}, snake = {}},
+    FUNCS = { UIDEF = {}, UI = {}, minesweeper = {}, snake = {}, blackjack = {} },
+    CARDAREAS = {},
   }
 end
 EF = EF_table_init()
@@ -129,3 +130,9 @@ function EF.FUNCS.split_text_3(text)
 
     return result
 end
+
+-- uh yeah it freezes the entire game for the given time (may be useful later idk)
+function EF.FUNCS.sleep(t)
+    local sec = tonumber(os.clock() + t)
+    while (os.clock() < sec) do end
+  end

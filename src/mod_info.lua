@@ -61,12 +61,21 @@ SMODS.current_mod.extra_tabs = function()
                             config = {padding = 0.5},
                             nodes = {
                                 {
-                                    n = G.UIT.R,
+                                    n = G.UIT.C,
                                     config = {
                                         minw = 4, minh = 1.5, align = "cm", colour = G.C.BLUE, r = 0.1, id = "EF_snake_mainmenu", button = "EF_minigames_mainmenu", hover = true, shadow = true
                                     },
                                     nodes = {
                                         {n = G.UIT.T, config = { text="Snake", scale = 0.75, colour = G.C.UI.TEXT_LIGHT}, nodes = {}}
+                                    }
+                                },
+                                {
+                                    n = G.UIT.C,
+                                    config = {
+                                        minw = 4, minh = 1.5, align = "cm", colour = G.C.BLUE, r = 0.1, id = "EF_blackjack_mainmenu", button = "EF_minigames_mainmenu", hover = true, shadow = true
+                                    },
+                                    nodes = {
+                                        {n = G.UIT.T, config = { text="Blackjack", scale = 0.75, colour = G.C.UI.TEXT_LIGHT}, nodes = {}}
                                     }
                                 },
                             }
@@ -89,5 +98,7 @@ G.FUNCS.EF_minigames_mainmenu = function(e)
         EF.FUNCS.UI.parlor(true)
     elseif e.config.id == "EF_snake_mainmenu" then
         EF.FUNCS.UI.snake("hard", true)
+    elseif e.config.id == "EF_blackjack_mainmenu" then
+        EF.FUNCS.UI.blackjack(true)
     end
 end
