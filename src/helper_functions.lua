@@ -132,7 +132,7 @@ function EF.FUNCS.split_text_3(text)
 end
 
 -- uh yeah it freezes the entire game for the given time (may be useful later idk)
-function EF.FUNCS.sleep(t)
+function EF.FUNCS.freeze_sleep(t)
     local sec = tonumber(os.clock() + t)
     while (os.clock() < sec) do end
   end

@@ -99,6 +99,7 @@ end
 -- BlackJack
 assert(SMODS.load_file(ui_dir.."blackjack.lua"))()
 
+---@param main_menu? boolean
 function EF.FUNCS.UI.blackjack(main_menu)
     EF.vars.minigames.main_menu = main_menu or false
     

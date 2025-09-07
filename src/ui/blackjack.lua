@@ -234,12 +234,34 @@ function EF.FUNCS.UIDEF.blackjack_end(who)
     win_text = "Came out net zero :0"
   end
 
+  -- print(#EF.CARDAREAS.blackjack_player.cards)
+  -- print(#EF.CARDAREAS.blackjack_dealer.cards)
   return {
     n=G.UIT.ROOT,
     config = {r = 0.1, minw = 15, minh = 8, align = "cm", colour = G.C.BLACK},
     nodes = {
       {n = G.UIT.R, config = {align = "tm"}, nodes = {{n=G.UIT.T, config={text="Blackjack", scale = 1, colour = G.C.UI.TEXT_LIGHT, shadow = true}},}},
       {n = G.UIT.R, config = {align = "tm"}, nodes = {{n=G.UIT.T, config={text=win_text, scale = 0.7, colour = G.C.UI.TEXT_LIGHT, shadow = true}}}},
+      -- {n=G.UIT.R, nodes={ -- it crashes idk why Oops! The game crashed cardarea.lua:504: bad argument #1 to 'ipairs' (table expected, got nil)
+      --   {n=G.UIT.C, nodes={
+      --     {n=G.UIT.R, nodes={{n = G.UIT.T, config = { text="Dealers Cards", scale = 0.6, colour = G.C.UI.TEXT_LIGHT, shadow = false}}}},
+      --     {n=G.UIT.R, nodes={
+      --       {n = G.UIT.T, config = { text = "Total: ", scale = 0.6, colour = G.C.UI.TEXT_LIGHT, shadow = false}},
+      --       {n = G.UIT.T, config = { ref_table=EF.vars.minigames.blackjack, ref_value = "dealer_total", scale = 0.6, colour = G.C.UI.TEXT_LIGHT, shadow = false}},
+      --     }}
+      --   }},
+      --   {n = G.UIT.O, config = { object = EF.CARDAREAS.blackjack_dealer }},
+      -- }},
+      -- {n=G.UIT.R, nodes={
+      --   {n=G.UIT.C, nodes={
+      --     {n=G.UIT.R, nodes={{n = G.UIT.T, config = { text="Players Cards", scale = 0.6, colour = G.C.UI.TEXT_LIGHT, shadow = false}}}},
+      --     {n=G.UIT.R, nodes={
+      --       {n = G.UIT.T, config = { text = "Total: ", scale = 0.6, colour = G.C.UI.TEXT_LIGHT, shadow = false}},
+      --       {n = G.UIT.T, config = { ref_table=EF.vars.minigames.blackjack, ref_value = "player_total", scale = 0.6, colour = G.C.UI.TEXT_LIGHT, shadow = false}},
+      --     }}
+      --   }},
+      --   {n = G.UIT.O, config = { object = EF.CARDAREAS.blackjack_player }},
+      -- }},
     }
   }
 end
@@ -252,8 +274,6 @@ end
 function EF.FUNCS.blackjack.on_end(who)
   EF.vars.minigames.blackjack.won = true
   G.E_MANAGER:add_event(Event({
-    trigger = "after",
-    delay=1,
     func = function()
       if EF.vars.minigames.main_menu or who == "dealer" then
         -- hello
@@ -284,10 +304,11 @@ function EF.FUNCS.blackjack.check_win_state()
     EF.FUNCS.blackjack.on_end("player")
   elseif player_total > 21 then
     EF.FUNCS.blackjack.on_end("dealer")
+  else
+    EF.vars.minigames.blackjack.player_total = getTotal(EF.CARDAREAS.blackjack_player.cards or {})
+    EF.vars.minigames.blackjack.dealer_total = getTotal(EF.CARDAREAS.blackjack_dealer.cards or {})
   end
 
-  EF.vars.minigames.blackjack.player_total = getTotal(EF.CARDAREAS.blackjack_player.cards)
-  EF.vars.minigames.blackjack.dealer_total = getTotal(EF.CARDAREAS.blackjack_dealer.cards)
 end
 
 ---------------
@@ -314,13 +335,11 @@ function G.FUNCS.EF_blackjack_hit(e)
   EF.CARDAREAS.blackjack_player:emplace(player_card)
 
   EF.FUNCS.blackjack.check_win_state()
-  if EF.vars.minigames.blackjack.won then e.config.button = nil end
   EF.vars.minigames.blackjack.dealer_total = getTotal(EF.CARDAREAS.blackjack_dealer.cards, true)
 end
 
 function G.FUNCS.EF_blackjack_stand(e)
   EF.FUNCS.blackjack.check_win_state()
-  if EF.vars.minigames.blackjack.won then e.config.button = nil end
   for _, card in ipairs(EF.CARDAREAS.blackjack_dealer.cards) do
     if card.facing == "back" then
       card:flip()
@@ -336,8 +355,7 @@ function G.FUNCS.EF_blackjack_stand(e)
 
       EF.FUNCS.blackjack.check_win_state()
 
-      if not EF.vars.minigames.blackjack.won then G.FUNCS.EF_blackjack_stand()
-      else e.config.button = nil end
+      if not EF.vars.minigames.blackjack.won then G.FUNCS.EF_blackjack_stand(e) end
 
       return true
     end
