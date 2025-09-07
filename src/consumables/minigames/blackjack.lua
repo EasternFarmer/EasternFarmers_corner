@@ -9,8 +9,8 @@ SMODS.Consumable {
             'where you bet your money'
         }
     },
-    atlas = "missing_joker",
-    -- pos = { x = 0, y = 0 },
+    atlas = "minigame",
+    pos = { x = 3, y = 0 },
     discovered = true,
     loc_vars = function(self, info_queue, card)
         return { vars = {} }

@@ -9,8 +9,8 @@ SMODS.Consumable {
             'in {C:gold}easy{} difficulty'
         }
     },
-    atlas = "missing_joker",
-    -- pos = { x = 0, y = 0 },
+    atlas = "minigame",
+    pos = { x = 0, y = 0 },
     discovered = true,
     loc_vars = function(self, info_queue, card)
         return { vars = {} }
@@ -39,8 +39,8 @@ SMODS.Consumable {
             'in {C:gold}hard{} difficulty'
         }
     },
-    atlas = "missing_joker",
-    -- pos = { x = 0, y = 0 },
+    atlas = "minigame",
+    pos = { x = 0, y = 0 },
     discovered = true,
     loc_vars = function(self, info_queue, card)
         return { vars = {} }

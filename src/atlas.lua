@@ -61,3 +61,11 @@ SMODS.Atlas({
     py = 95,
     atlas_table = "ASSET_ATLAS"
 })
+
+SMODS.Atlas({
+    key = "minigame", 
+    path = "minigame.png", 
+    px = 71,
+    py = 95,
+    atlas_table = "ASSET_ATLAS"
+})

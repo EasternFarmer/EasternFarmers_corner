@@ -9,8 +9,8 @@ SMODS.Consumable {
             'from the game {C:gold}Blue Prince{}'
         }
     },
-    atlas = "missing_joker",
-    -- pos = { x = 0, y = 0 },
+    atlas = "minigame",
+    pos = { x = 1, y = 0 },
     discovered = true,
     loc_vars = function(self, info_queue, card)
         return { vars = {} }
