@@ -1,12 +1,12 @@
 ---@diagnostic disable-next-line: lowercase-global
 function lenient_bignum(x)
-    return x
+	return x
 end
 ---@diagnostic disable-next-line: lowercase-global
 function to_number(x)
-    return x
+	return x
 end
 ---@diagnostic disable-next-line: lowercase-global
 function to_big(x)
-    return x
+	return x
 end

@@ -1,29 +1,29 @@
-SMODS.Consumable {
-    key = 'blackjack_card',
-    set = 'minigame_card',
-    config = { extra = {} },
-    loc_txt = {
-        name = 'Blackjack',
-        text = {
-            'Starts a game of Blackjack',
-            'where you bet your money'
-        }
-    },
-    atlas = "minigame",
-    pos = { x = 3, y = 0 },
-    discovered = true,
-    loc_vars = function(self, info_queue, card)
-        return { vars = {} }
-    end,
-    use = function(self, card, area, copier)
-        G.E_MANAGER:add_event(Event({
-            func = function() 
-                EF.FUNCS.UI.blackjack()
-                return true
-            end
-        }))
-    end,
-    can_use = function(self, card)
-        return true
-    end
-}
+SMODS.Consumable({
+	key = "blackjack_card",
+	set = "minigame_card",
+	config = { extra = {} },
+	loc_txt = {
+		name = "Blackjack",
+		text = {
+			"Starts a game of Blackjack",
+			"where you bet your money",
+		},
+	},
+	atlas = "minigame",
+	pos = { x = 3, y = 0 },
+	discovered = true,
+	loc_vars = function(self, info_queue, card)
+		return { vars = {} }
+	end,
+	use = function(self, card, area, copier)
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				EF.FUNCS.UI.blackjack()
+				return true
+			end,
+		}))
+	end,
+	can_use = function(self, card)
+		return true
+	end,
+})

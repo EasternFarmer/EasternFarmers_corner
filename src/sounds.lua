@@ -1,4 +1,4 @@
-SMODS.Sound{
-    key="LetsGoGamblingSound",
-    path="gamblecore.ogg"
-}
+SMODS.Sound({
+	key = "LetsGoGamblingSound",
+	path = "gamblecore.ogg",
+})
