@@ -614,14 +614,11 @@ function EF.FUNCS.UIDEF.snake_reward_info()
 	for i, v in ipairs(reward_list[difficulty]) do
 		local message = i .. ". " .. v.text
 		-- table.insert(nodes, {n = G.UIT.R, config = {align = "tm"}, nodes = {{n=G.UIT.T, config={text=message, scale = 0.7, colour = G.C.WHITE, shadow = true}}}})
-		table.insert(
-			nodes,
-			{
-				n = G.UIT.R,
-				config = { align = "cm", padding = 0.03 },
-				nodes = SMODS.localize_box(loc_parse_string("{C:white}" .. message), { scale = 2 }),
-			}
-		)
+		table.insert(nodes, {
+			n = G.UIT.R,
+			config = { align = "cm", padding = 0.03 },
+			nodes = SMODS.localize_box(loc_parse_string("{C:white}" .. message), { scale = 2 }),
+		})
 	end
 
 	return {

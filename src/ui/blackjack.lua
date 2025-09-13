@@ -375,18 +375,26 @@ function EF.FUNCS.UIDEF.blackjack_end(who)
 				n = G.UIT.R,
 				config = { align = "tm" },
 				nodes = {
-					{ n = G.UIT.T, config = { text = "Blackjack", scale = 1, colour = G.C.UI.TEXT_LIGHT, shadow = true } },
+					{
+						n = G.UIT.T,
+						config = { text = "Blackjack", scale = 1, colour = G.C.UI.TEXT_LIGHT, shadow = true },
+					},
 				},
 			},
 			{
 				n = G.UIT.R,
 				config = { align = "tm" },
-				nodes = { { n = G.UIT.T, config = {
-					text = win_text,
-					scale = 0.7,
-					colour = G.C.UI.TEXT_LIGHT,
-					shadow = true,
-				} } },
+				nodes = {
+					{
+						n = G.UIT.T,
+						config = {
+							text = win_text,
+							scale = 0.7,
+							colour = G.C.UI.TEXT_LIGHT,
+							shadow = true,
+						},
+					},
+				},
 			},
 			-- {n=G.UIT.R, nodes={ -- it crashes idk why Oops! The game crashed cardarea.lua:504: bad argument #1 to 'ipairs' (table expected, got nil)
 			--   {n=G.UIT.C, nodes={

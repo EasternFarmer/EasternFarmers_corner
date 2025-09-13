@@ -155,3 +155,30 @@ SMODS.Joker({
 		end
 	end,
 })
+
+SMODS.Joker({
+	key = "oops_maybe_6s",
+	loc_txt = {
+		name = "Oops Maybe 6's",
+		text = {
+			"{C:green}1 in 2{} chance to",
+			"Double all {C:attention}listed{}",
+			"{C:green,E:1,S:1.1}probabilities{}",
+			"{C:inactive}(ex: {C:green}1 in 3{C:inactive} -> {C:green}2 in 3{C:inactive})",
+		},
+	},
+	rarity = 1,
+	unlocked = true,
+	discovered = true,
+	blueprint_compat = false,
+	cost = 4,
+	calculate = function(self, card, context)
+		if context.mod_probability then
+			if pseudorandom("EF_oops_maybe_6s") < 1 / 2 then
+				return {
+					numerator = context.numerator * 2,
+				}
+			end
+		end
+	end,
+})

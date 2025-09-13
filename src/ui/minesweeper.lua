@@ -187,7 +187,9 @@ function EF.FUNCS.UIDEF.minesweeper_info()
 			{
 				n = G.UIT.R,
 				config = { align = "tm" },
-				nodes = { { n = G.UIT.T, config = { text = "Minesweeper", scale = 1.5, colour = G.C.WHITE, shadow = true } } },
+				nodes = {
+					{ n = G.UIT.T, config = { text = "Minesweeper", scale = 1.5, colour = G.C.WHITE, shadow = true } },
+				},
 			},
 			{
 				n = G.UIT.R,
@@ -340,7 +342,9 @@ function EF.FUNCS.UIDEF.minesweeper_score_tab()
 			{
 				n = G.UIT.R,
 				config = { align = "tm" },
-				nodes = { { n = G.UIT.T, config = { text = "Minesweeper", scale = 1, colour = G.C.WHITE, shadow = true } } },
+				nodes = {
+					{ n = G.UIT.T, config = { text = "Minesweeper", scale = 1, colour = G.C.WHITE, shadow = true } },
+				},
 			},
 			{
 				n = G.UIT.R,
@@ -370,35 +374,37 @@ function EF.FUNCS.UIDEF.minesweeper_score_tab()
 end
 
 function EF.FUNCS.minesweeper.get_difficulty_title(difficulty)
-	local difficulty_nodes =
-		{
-			easy = {
-				n = G.UIT.R,
-				config = { align = "tm" },
-				nodes = {
-					{ n = G.UIT.T, config = { text = "Minesweeper (easy)", scale = 1, colour = G.C.WHITE, shadow = true } },
-				},
+	local difficulty_nodes = {
+		easy = {
+			n = G.UIT.R,
+			config = { align = "tm" },
+			nodes = {
+				{ n = G.UIT.T, config = { text = "Minesweeper (easy)", scale = 1, colour = G.C.WHITE, shadow = true } },
 			},
-			medium = {
-				n = G.UIT.R,
-				config = { align = "tm" },
-				nodes = {
-					{ n = G.UIT.T, config = {
+		},
+		medium = {
+			n = G.UIT.R,
+			config = { align = "tm" },
+			nodes = {
+				{
+					n = G.UIT.T,
+					config = {
 						text = "Minesweeper (medium)",
 						scale = 1,
 						colour = G.C.WHITE,
 						shadow = true,
-					} },
+					},
 				},
 			},
-			hard = {
-				n = G.UIT.R,
-				config = { align = "tm" },
-				nodes = {
-					{ n = G.UIT.T, config = { text = "Minesweeper (hard)", scale = 1, colour = G.C.WHITE, shadow = true } },
-				},
+		},
+		hard = {
+			n = G.UIT.R,
+			config = { align = "tm" },
+			nodes = {
+				{ n = G.UIT.T, config = { text = "Minesweeper (hard)", scale = 1, colour = G.C.WHITE, shadow = true } },
 			},
-		}
+		},
+	}
 	return difficulty_nodes[difficulty]
 end
 
@@ -437,14 +443,11 @@ function EF.FUNCS.UIDEF.minesweeper_reward_info()
 	for i, v in ipairs(reward_list[difficulty]) do
 		local message = i .. ". " .. v
 		-- table.insert(nodes, {n = G.UIT.R, config = {align = "tm"}, nodes = {{n=G.UIT.T, config={text=message, scale = 0.7, colour = G.C.WHITE, shadow = true}}}})
-		table.insert(
-			nodes,
-			{
-				n = G.UIT.R,
-				config = { align = "cm", padding = 0.03 },
-				nodes = SMODS.localize_box(loc_parse_string(message), { scale = 2 }),
-			}
-		)
+		table.insert(nodes, {
+			n = G.UIT.R,
+			config = { align = "cm", padding = 0.03 },
+			nodes = SMODS.localize_box(loc_parse_string(message), { scale = 2 }),
+		})
 	end
 
 	return {

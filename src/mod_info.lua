@@ -90,7 +90,11 @@ SMODS.current_mod.extra_tabs = function()
 											nodes = {
 												{
 													n = G.UIT.T,
-													config = { text = "Parlor", scale = 0.75, colour = G.C.UI.TEXT_LIGHT },
+													config = {
+														text = "Parlor",
+														scale = 0.75,
+														colour = G.C.UI.TEXT_LIGHT,
+													},
 													nodes = {},
 												},
 											},
@@ -117,7 +121,11 @@ SMODS.current_mod.extra_tabs = function()
 											nodes = {
 												{
 													n = G.UIT.T,
-													config = { text = "Snake", scale = 0.75, colour = G.C.UI.TEXT_LIGHT },
+													config = {
+														text = "Snake",
+														scale = 0.75,
+														colour = G.C.UI.TEXT_LIGHT,
+													},
 													nodes = {},
 												},
 											},

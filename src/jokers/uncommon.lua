@@ -481,11 +481,14 @@ SMODS.Joker({
 	loc_vars = function(self, info_queue, card)
 		return { vars = { card.ability.extra.correct_count, card.ability.extra.dollars } }
 	end,
-	config = { extra = { correct_count = 3, dollars = 100 }, zzz = {
-		hand_chosen = nil,
-		current_streak = 0,
-		flag = false,
-	} },
+	config = {
+		extra = { correct_count = 3, dollars = 100 },
+		zzz = {
+			hand_chosen = nil,
+			current_streak = 0,
+			flag = false,
+		},
+	},
 	unlocked = true,
 	discovered = true,
 	blueprint_compat = false,
