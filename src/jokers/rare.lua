@@ -274,8 +274,8 @@ SMODS.Joker({
 	end,
 	calculate = function(self, card, context)
 		if context.retrigger_joker_check and not context.retrigger_joker and context.other_card ~= card then
-			local name = string.gsub(context.other_card.config.center.name, "j_.+_", "", 1)
-			if name ~= "e" then
+			local name = localize({type = 'name_text', key = context.other_card.config.center.key, set = 'Joker'})
+			if string.lower(name) ~= "e" then
 				if string.match(name, "E") or string.match(name, "e") then
 					return { repetitions = card.ability.extra.retrigger }
 				end
